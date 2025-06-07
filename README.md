@@ -37,8 +37,6 @@ This system enables digital management of library activities with separate user 
 4. Commit and push your changes
 5. Inform the team to review your **Pull Request (PR)**
 
-> ⚠️ Only contributors assigned via the group discussion should push code. Passive members are not allowed.
-
 ---
 
 ## 📌 Guidelines
