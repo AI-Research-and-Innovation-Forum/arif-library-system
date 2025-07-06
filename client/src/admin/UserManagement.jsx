@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../services/api';
 
-
 function UserManagement() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -94,7 +93,6 @@ function UserManagement() {
         </div>
       </div>
 
-      {/* Users Table */}
       <div className="card bg-white dark:bg-slate-800 shadow-xl border border-gray-200 dark:border-gray-700">
         <div className="card-body">
           <h2 className="card-title text-black dark:text-white">Active Users</h2>
@@ -242,7 +240,7 @@ function UserManagement() {
       )}
 
       {/* Current Active Books Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="card bg-white dark:bg-blue-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
           <div className="card-body">
             <h2 className="card-title text-black dark:text-white">Total Active Books</h2>
@@ -251,17 +249,19 @@ function UserManagement() {
             </p>
           </div>
         </div>
-        
-        <div className="card bg-white dark:bg-red-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
+        <div className="card bg-white dark:bg-green-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
           <div className="card-body">
-            <h2 className="card-title text-black dark:text-white">Overdue Books</h2>
-            <p className="text-4xl font-bold text-red-600 dark:text-red-400">
-              {users.reduce((total, user) => {
-                if (user.currentBooks) {
-                  return total + user.currentBooks.filter(book => book.status === 'overdue').length;
-                }
-                return total;
-              }, 0)}
+            <h2 className="card-title text-black dark:text-white">Users with Active Books</h2>
+            <p className="text-4xl font-bold text-black dark:text-white">
+              {users.filter(user => user.activeIssues > 0).length}
+            </p>
+          </div>
+        </div>
+        <div className="card bg-white dark:bg-amber-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
+          <div className="card-body">
+            <h2 className="card-title text-black dark:text-white">Average Books per User</h2>
+            <p className="text-4xl font-bold text-black dark:text-white">
+              {users.length > 0 ? (users.reduce((total, user) => total + user.activeIssues, 0) / users.length).toFixed(1) : 0}
             </p>
           </div>
         </div>

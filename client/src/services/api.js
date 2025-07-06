@@ -7,6 +7,7 @@ const api = axios.create({
   },
 });
 
+
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -20,13 +21,14 @@ api.interceptors.request.use(
   }
 );
 
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      window.location.href = '/';
     }
     return Promise.reject(error);
   }
@@ -55,12 +57,13 @@ export const adminAPI = {
   addBook: (bookData) => {
     const formData = new FormData();
     
+
     formData.append('title', bookData.title);
     formData.append('author', bookData.author);
     formData.append('category', bookData.category);
     formData.append('isbn', bookData.isbn);
     formData.append('copiesAvailable', bookData.copiesAvailable);
-    
+
     if (bookData.image) {
       formData.append('image', bookData.image);
     }
@@ -85,6 +88,7 @@ export const adminAPI = {
   rejectRequest: (requestId, reason) => api.put(`/admin/requests/${requestId}/reject`, { reason }),
   returnRequest: (requestId) => api.put(`/admin/requests/${requestId}/return`),
   deleteRequest: (requestId) => api.delete(`/admin/requests/${requestId}`),
+
   getDashboardStats: () => api.get('/admin/dashboard-stats'),
 };
 
