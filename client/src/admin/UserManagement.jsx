@@ -42,13 +42,22 @@ function UserManagement() {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    if (!dateString) return 'N/A';
+    
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return 'Invalid Date';
+      
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      return 'Invalid Date';
+    }
   };
 
   if (loading) {
@@ -74,15 +83,16 @@ function UserManagement() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-black dark:text-white">User Management</h1>
-        <div className="stats shadow bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700">
-          <div className="stat">
-            <div className="stat-title text-black dark:text-white">Total Users</div>
-            <div className="stat-value text-primary">{users.length}</div>
+        <div className="flex gap-4 items-center">
+          <div className="stats shadow bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700">
+            <div className="stat">
+              <div className="stat-title text-black dark:text-white">Total Users</div>
+              <div className="stat-value text-primary">{users.length}</div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Users Table */}
       <div className="card bg-white dark:bg-slate-800 shadow-xl border border-gray-200 dark:border-gray-700">
         <div className="card-body">
           <h2 className="card-title text-black dark:text-white">Active Users</h2>
@@ -100,8 +110,19 @@ function UserManagement() {
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr key={user._id} className="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 border-b border-gray-200 dark:border-gray-700">
-                    <td className="font-medium text-black dark:text-white">{user.name}</td>
+                  <tr key={user._id} className={`bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 border-b border-gray-200 dark:border-gray-700 ${
+                    user.currentBooks && user.currentBooks.some(book => book.status === 'overdue') 
+                      ? 'border-l-4 border-l-red-500' 
+                      : ''
+                  }`}>
+                    <td className="font-medium text-black dark:text-white">
+                      <div className="flex items-center gap-2">
+                        {user.name}
+                        {user.currentBooks && user.currentBooks.some(book => book.status === 'overdue') && (
+                          <span className="badge badge-error badge-xs">Overdue</span>
+                        )}
+                      </div>
+                    </td>
                     <td className="text-black dark:text-white">{user.email}</td>
                     <td>
                       <span className={`badge ${user.role === 'admin' ? 'badge-primary' : 'badge-secondary'}`}>
@@ -109,7 +130,14 @@ function UserManagement() {
                       </span>
                     </td>
                     <td>
-                      <span className="badge badge-info">{user.activeIssues}</span>
+                      <div className="flex gap-1">
+                        <span className="badge badge-info">{user.activeIssues}</span>
+                        {user.currentBooks && user.currentBooks.some(book => book.status === 'overdue') && (
+                          <span className="badge badge-error badge-xs">
+                            {user.currentBooks.filter(book => book.status === 'overdue').length} overdue
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="text-black dark:text-white">{formatDate(user.createdAt)}</td>
                     <td>
@@ -178,13 +206,20 @@ function UserManagement() {
                           <td className="font-medium text-black dark:text-white">{issue.book.title}</td>
                           <td className="text-black dark:text-white">{issue.book.author}</td>
                           <td className="text-black dark:text-white">{issue.book.isbn}</td>
-                          <td className="text-black dark:text-white">{formatDate(issue.issuedAt)}</td>
+                          <td className="text-black dark:text-white">{formatDate(issue.issueDate)}</td>
                           <td>
-                            {issue.returned ? formatDate(issue.returnedAt) : '-'}
+                            {issue.returnDate ? formatDate(issue.returnDate) : '-'}
                           </td>
                           <td>
-                            <span className={`badge ${issue.returned ? 'badge-success' : 'badge-warning'}`}>
-                              {issue.returned ? 'Returned' : 'Active'}
+                            <span className={`badge ${
+                              issue.status === 'returned' ? 'badge-success' : 
+                              issue.status === 'approved' ? 'badge-info' :
+                              issue.status === 'rejected' ? 'badge-error' :
+                              issue.status === 'overdue' ? 'badge-warning' :
+                              issue.status === 'issued' ? 'badge-primary' :
+                              'badge-secondary'
+                            }`}>
+                              {issue.status.charAt(0).toUpperCase() + issue.status.slice(1)}
                             </span>
                           </td>
                         </tr>

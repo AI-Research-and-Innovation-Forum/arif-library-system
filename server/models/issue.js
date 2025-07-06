@@ -19,8 +19,39 @@ const issueSchema = new mongoose.Schema(
     returnDate: Date,
     status: {
       type: String,
-      enum: ["issued", "returned"],
-      default: "issued",
+      enum: ["requested", "approved", "rejected", "issued", "returned", "overdue"],
+      default: "requested",
+    },
+    approvedAt: Date,
+    rejectedAt: Date,
+    rejectionReason: String,
+    physicalHandling: {
+      issued: {
+        type: Boolean,
+        default: false,
+      },
+      issuedAt: Date,
+      issuedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      returned: {
+        type: Boolean,
+        default: false,
+      },
+      returnedAt: Date,
+      returnedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    },
+    dueDate: {
+      type: Date,
+      required: true,
+    },
+    fine: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

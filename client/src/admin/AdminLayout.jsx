@@ -18,8 +18,6 @@ function AdminLayout({ children }) {
     setLoading(false);
   }, []);
 
-  console.log('AdminLayout rendering with children:', children, 'isAdmin:', isAdmin);
-
   // Show loading while checking admin status
   if (loading) {
     return (
