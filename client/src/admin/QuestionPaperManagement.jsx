@@ -133,7 +133,7 @@ function QuestionPaperManagement() {
             </div>
 
             {/* Filters */}
-            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 mb-6">
+            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 mb-6 border border-gray-200 dark:border-gray-700">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Filters</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
@@ -145,7 +145,7 @@ function QuestionPaperManagement() {
                             value={filters.subject}
                             onChange={(e) => handleFilterChange('subject', e.target.value)}
                             placeholder="Search by subject..."
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-black dark:text-white"
                         />
                     </div>
                     
@@ -156,7 +156,7 @@ function QuestionPaperManagement() {
                         <select
                             value={filters.year}
                             onChange={(e) => handleFilterChange('year', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-black dark:text-white"
                         >
                             <option value="">All Years</option>
                             {years.map(year => (
@@ -172,7 +172,7 @@ function QuestionPaperManagement() {
                         <select
                             value={filters.semester}
                             onChange={(e) => handleFilterChange('semester', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-black dark:text-white"
                         >
                             <option value="">All Semesters</option>
                             {semesters.map(sem => (
@@ -190,7 +190,7 @@ function QuestionPaperManagement() {
                             value={filters.course}
                             onChange={(e) => handleFilterChange('course', e.target.value)}
                             placeholder="Search by course..."
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-black dark:text-white"
                         />
                     </div>
                 </div>

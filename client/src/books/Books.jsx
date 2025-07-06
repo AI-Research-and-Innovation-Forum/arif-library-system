@@ -60,14 +60,13 @@ function Books() {
       
       // Show success message
       const successMessage = document.createElement('div');
-      successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
-      successMessage.textContent = 'Book request submitted successfully! Please wait for admin approval.';
+      successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white dark:text-white px-6 py-3 rounded-lg shadow-lg z-50';
+      successMessage.textContent = 'Book requested successfully!';
       document.body.appendChild(successMessage);
       
-      // Remove success message after 5 seconds
       setTimeout(() => {
         document.body.removeChild(successMessage);
-      }, 5000);
+      }, 3000);
       
       fetchBooks(); // Refresh to update availability
     } catch (err) {
@@ -75,14 +74,13 @@ function Books() {
       
       // Show error message
       const errorMessage = document.createElement('div');
-      errorMessage.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
-      errorMessage.textContent = err.response?.data?.message || 'Failed to submit book request. Please try again.';
+      errorMessage.className = 'fixed top-4 right-4 bg-red-500 text-white dark:text-white px-6 py-3 rounded-lg shadow-lg z-50';
+      errorMessage.textContent = err.response?.data?.message || 'Failed to request book';
       document.body.appendChild(errorMessage);
       
-      // Remove error message after 5 seconds
       setTimeout(() => {
         document.body.removeChild(errorMessage);
-      }, 5000);
+      }, 3000);
     }
   };
 
@@ -149,14 +147,14 @@ function Books() {
                   placeholder="Search books by title or author..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="input input-bordered w-full"
+                  className="input input-bordered w-full bg-white dark:bg-slate-800 text-black dark:text-white border-black dark:border-white"
                 />
               </div>
               <div className="w-full md:w-48">
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="select select-bordered w-full"
+                  className="select select-bordered w-full bg-white dark:bg-slate-800 text-black dark:text-white border-black dark:border-white"
                 >
                   <option value="all">All Categories</option>
                   {categories.map((category) => (
@@ -201,29 +199,6 @@ function Books() {
             </div>
           )}
 
-          {/* Statistics */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="card bg-blue-50 dark:bg-blue-900 text-black dark:text-white shadow-xl">
-              <div className="card-body text-center">
-                <h3 className="card-title justify-center">Total Books</h3>
-                <p className="text-3xl font-bold">{books.length}</p>
-              </div>
-            </div>
-            <div className="card bg-green-50 dark:bg-green-900 text-black dark:text-white shadow-xl">
-              <div className="card-body text-center">
-                <h3 className="card-title justify-center">Available Books</h3>
-                <p className="text-3xl font-bold">
-                  {books.filter(book => book.copiesAvailable > 0).length}
-                </p>
-              </div>
-            </div>
-            <div className="card bg-amber-50 dark:bg-amber-900 text-black dark:text-white shadow-xl">
-              <div className="card-body text-center">
-                <h3 className="card-title justify-center">Categories</h3>
-                <p className="text-3xl font-bold">{categories.length}</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <Footer />

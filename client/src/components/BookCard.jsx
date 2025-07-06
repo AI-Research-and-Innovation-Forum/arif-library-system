@@ -54,13 +54,13 @@ function BookCard({ book, onRequest, user }) {
 
   return (
     <>
-      <div className="card bg-amber-50 text-black dark:bg-slate-800 dark:text-white shadow-xl hover:scale-105 duration-200 transition-transform">
+      <div className="card h-full bg-amber-100 text-black dark:bg-slate-800 dark:text-white shadow-xl hover:scale-105 duration-200 transition-transform">
         <figure className="h-48">
           {book.image ? (
             <img
               src={`http://localhost:8080${book.image}`}
               alt={book.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full"
             />
           ) : (
             <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
@@ -104,7 +104,7 @@ function BookCard({ book, onRequest, user }) {
               className={`btn btn-sm ${
                 getRequestButtonDisabled()
                   ? 'btn-disabled' 
-                  : 'btn-primary hover:bg-pink-600'
+                  : 'btn-primary hover:bg-pink-500'
               }`}
             >
               {getRequestButtonText()}

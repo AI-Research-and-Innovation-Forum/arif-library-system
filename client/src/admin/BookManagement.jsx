@@ -103,7 +103,7 @@ function BookManagement() {
       
       // Show success message
       const successMessage = document.createElement('div');
-      successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+      successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white dark:text-white px-6 py-3 rounded-lg shadow-lg z-50';
       successMessage.textContent = 'Book copies updated successfully!';
       document.body.appendChild(successMessage);
       
@@ -143,9 +143,9 @@ function BookManagement() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-white dark:bg-slate-900">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Book Management</h1>
+        <h1 className="text-3xl font-bold text-black dark:text-white">Book Management</h1>
         <button
           onClick={() => setShowAddForm(!showAddForm)}
           className="btn btn-primary"
@@ -161,85 +161,85 @@ function BookManagement() {
       )}
 
       {showAddForm && (
-        <div className="card bg-base-100 shadow-xl">
+        <div className="card bg-white dark:bg-slate-800 shadow-xl border border-gray-200 dark:border-gray-700">
           <div className="card-body">
-            <h2 className="card-title">Add New Book</h2>
+            <h2 className="card-title text-black dark:text-white">Add New Book</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="label">
-                    <span className="label-text">Title</span>
+                    <span className="label-text text-black dark:text-white">Title</span>
                   </label>
                   <input
                     type="text"
                     name="title"
                     value={formData.title}
                     onChange={handleInputChange}
-                    className="input input-bordered w-full"
+                    className="input input-bordered w-full bg-white dark:bg-slate-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
                     required
                   />
                 </div>
                 <div>
                   <label className="label">
-                    <span className="label-text">Author</span>
+                    <span className="label-text text-black dark:text-white">Author</span>
                   </label>
                   <input
                     type="text"
                     name="author"
                     value={formData.author}
                     onChange={handleInputChange}
-                    className="input input-bordered w-full"
+                    className="input input-bordered w-full bg-white dark:bg-slate-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
                     required
                   />
                 </div>
                 <div>
                   <label className="label">
-                    <span className="label-text">Category</span>
+                    <span className="label-text text-black dark:text-white">Category</span>
                   </label>
                   <input
                     type="text"
                     name="category"
                     value={formData.category}
                     onChange={handleInputChange}
-                    className="input input-bordered w-full"
+                    className="input input-bordered w-full bg-white dark:bg-slate-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
                   />
                 </div>
                 <div>
                   <label className="label">
-                    <span className="label-text">ISBN</span>
+                    <span className="label-text text-black dark:text-white">ISBN</span>
                   </label>
                   <input
                     type="text"
                     name="isbn"
                     value={formData.isbn}
                     onChange={handleInputChange}
-                    className="input input-bordered w-full"
+                    className="input input-bordered w-full bg-white dark:bg-slate-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
                     required
                   />
                 </div>
                 <div>
                   <label className="label">
-                    <span className="label-text">Copies Available</span>
+                    <span className="label-text text-black dark:text-white">Copies Available</span>
                   </label>
                   <input
                     type="number"
                     name="copiesAvailable"
                     value={formData.copiesAvailable}
                     onChange={handleInputChange}
-                    className="input input-bordered w-full"
+                    className="input input-bordered w-full bg-white dark:bg-slate-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
                     min="1"
                     required
                   />
                 </div>
                 <div>
                   <label className="label">
-                    <span className="label-text">Book Cover Image</span>
+                    <span className="label-text text-black dark:text-white">Book Cover Image</span>
                   </label>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    className="file-input file-input-bordered w-full"
+                    className="file-input file-input-bordered w-full bg-white dark:bg-slate-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     Accepted formats: JPG, PNG, GIF (Max 5MB)
@@ -251,7 +251,7 @@ function BookManagement() {
               {imagePreview && (
                 <div className="mt-4">
                   <label className="label">
-                    <span className="label-text">Image Preview</span>
+                    <span className="label-text text-black dark:text-white">Image Preview</span>
                   </label>
                   <div className="flex items-center space-x-4">
                     <img
@@ -290,22 +290,22 @@ function BookManagement() {
         </div>
       )}
 
-      <div className="overflow-x-auto">
-        <table className="table table-zebra w-full">
+      <div className="overflow-x-auto bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700">
+        <table className="table w-full">
           <thead>
-            <tr>
-              <th>Cover</th>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Category</th>
-              <th>ISBN</th>
-              <th>Copies</th>
-              <th>Actions</th>
+            <tr className="bg-gray-50 dark:bg-slate-700">
+              <th className="text-black dark:text-white">Cover</th>
+              <th className="text-black dark:text-white">Title</th>
+              <th className="text-black dark:text-white">Author</th>
+              <th className="text-black dark:text-white">Category</th>
+              <th className="text-black dark:text-white">ISBN</th>
+              <th className="text-black dark:text-white">Copies</th>
+              <th className="text-black dark:text-white">Actions</th>
             </tr>
           </thead>
           <tbody>
             {books.map((book) => (
-              <tr key={book._id}>
+              <tr key={book._id} className="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 border-b border-gray-200 dark:border-gray-700">
                 <td>
                   {book.image ? (
                     <img
@@ -314,18 +314,18 @@ function BookManagement() {
                       className="w-16 h-20 object-cover rounded"
                     />
                   ) : (
-                    <div className="w-16 h-20 bg-gray-200 rounded flex items-center justify-center">
-                      <span className="text-xs text-gray-500">No Image</span>
+                    <div className="w-16 h-20 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center">
+                      <span className="text-xs text-gray-500 dark:text-gray-400">No Image</span>
                     </div>
                   )}
                 </td>
-                <td>{book.title}</td>
-                <td>{book.author}</td>
-                <td>{book.category}</td>
-                <td>{book.isbn}</td>
+                <td className="text-black dark:text-white">{book.title}</td>
+                <td className="text-black dark:text-white">{book.author}</td>
+                <td className="text-black dark:text-white">{book.category}</td>
+                <td className="text-black dark:text-white">{book.isbn}</td>
                 <td>
                   <div className="flex items-center space-x-2">
-                    <span className="font-semibold">{book.copiesAvailable}</span>
+                    <span className="font-semibold text-black dark:text-white">{book.copiesAvailable}</span>
                     <button
                       onClick={() => openCopyModal(book)}
                       className="btn btn-xs btn-outline"
@@ -360,8 +360,8 @@ function BookManagement() {
       {/* Copy Update Modal */}
       {showCopyModal && selectedBook && (
         <div className="modal modal-open">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg mb-4">Update Book Copies</h3>
+          <div className="modal-box bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700">
+            <h3 className="font-bold text-lg mb-4 text-black dark:text-white">Update Book Copies</h3>
             <div className="space-y-4">
               <div className="flex items-center space-x-4">
                 {selectedBook.image ? (
@@ -371,56 +371,45 @@ function BookManagement() {
                     className="w-16 h-20 object-cover rounded"
                   />
                 ) : (
-                  <div className="w-16 h-20 bg-gray-200 rounded flex items-center justify-center">
-                    <span className="text-xs text-gray-500">No Image</span>
+                  <div className="w-16 h-20 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">No Image</span>
                   </div>
                 )}
                 <div>
-                  <h4 className="font-semibold">{selectedBook.title}</h4>
-                  <p className="text-sm opacity-70">by {selectedBook.author || 'Unknown'}</p>
-                  <p className="text-xs opacity-60">Current copies: {selectedBook.copiesAvailable}</p>
+                  <h4 className="font-semibold text-black dark:text-white">{selectedBook.title}</h4>
+                  <p className="text-sm opacity-70 text-black dark:text-white">by {selectedBook.author || 'Unknown'}</p>
+                  <p className="text-xs opacity-60 text-black dark:text-white">Current copies: {selectedBook.copiesAvailable}</p>
                 </div>
               </div>
               
               <div>
                 <label className="label">
-                  <span className="label-text">New Number of Copies</span>
+                  <span className="label-text text-black dark:text-white">New Number of Copies</span>
                 </label>
                 <input
                   type="number"
                   value={newCopies}
                   onChange={(e) => setNewCopies(parseInt(e.target.value) || 0)}
-                  className="input input-bordered w-full"
+                  className="input input-bordered w-full bg-white dark:bg-slate-700 text-black dark:text-white border-gray-300 dark:border-gray-600"
                   min="0"
                   required
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Enter the total number of copies available for this book
-                </p>
-              </div>
-              
-              <div className="bg-blue-50 dark:bg-blue-900 p-3 rounded-lg">
-                <p className="text-sm">
-                  <strong>Note:</strong> This will set the total number of copies available for borrowing.
                 </p>
               </div>
             </div>
             
             <div className="modal-action">
-              <button 
-                className="btn btn-ghost" 
-                onClick={() => {
-                  setShowCopyModal(false);
-                  setSelectedBook(null);
-                  setNewCopies(0);
-                }}
+              <button
+                onClick={() => setShowCopyModal(false)}
+                className="btn btn-ghost"
               >
                 Cancel
               </button>
-              <button 
-                className="btn btn-primary" 
+              <button
                 onClick={handleUpdateCopies}
-                disabled={newCopies < 0}
+                className="btn btn-primary"
               >
                 Update Copies
               </button>

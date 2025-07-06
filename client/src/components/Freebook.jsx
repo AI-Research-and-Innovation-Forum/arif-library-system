@@ -11,6 +11,7 @@ function Freebook() {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
+    const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(() => {
         fetchBooks();
@@ -61,13 +62,13 @@ function Freebook() {
             : { text: 'Not Available', color: 'badge-error' };
 
         return (
-            <div className="card bg-amber-50 text-black dark:bg-slate-800 dark:text-white shadow-xl hover:scale-105 duration-200 transition-transform">
+            <div className="card h-full bg-amber-100 text-black dark:bg-slate-800 dark:text-white shadow-xl hover:scale-105 duration-200 transition-transform">
                 <figure className="h-48">
                     {book.image ? (
                         <img
                             src={`http://localhost:8080${book.image}`}
                             alt={book.title}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full"
                         />
                     ) : (
                         <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
@@ -79,21 +80,25 @@ function Freebook() {
                     )}
                 </figure>
                 
-                <div className="card-body">
-                    <h2 className="card-title text-lg">
-                        {book.title}
-                        <div className="badge badge-secondary">{book.category || 'General'}</div>
-                    </h2>
-                    
-                    <p className="text-sm opacity-70 mb-2">
-                        <strong>Author:</strong> {book.author || 'Unknown'}
-                    </p>
-                    
-                    {book.isbn && (
-                        <p className="text-xs opacity-60 mb-2">
-                            <strong>ISBN:</strong> {book.isbn}
+                <div className="card-body flex flex-col">
+                    <div className="flex-grow">
+                        <div className="flex justify-between items-start mb-2">
+                            <h2 className="card-title text-lg line-clamp-2 flex-grow card-title-stable">
+                                {book.title}
+                            </h2>
+                            <div className="badge badge-secondary ml-2 flex-shrink-0">{book.category || 'General'}</div>
+                        </div>
+                        
+                        <p className="text-sm opacity-70">
+                            <strong>Author:</strong> {book.author || 'Unknown'}
                         </p>
-                    )}
+                        
+                        {book.isbn && (
+                            <p className="text-xs opacity-60 mb-2">
+                                <strong>ISBN:</strong> {book.isbn}
+                            </p>
+                        )}
+                    </div>
                     
                     <div className="card-actions justify-between items-center mt-4">
                         <div className="flex flex-col items-start">
@@ -106,13 +111,13 @@ function Freebook() {
                         </div>
                         
                         {user ? (
-                            <Link to="/books" className="btn btn-sm btn-primary hover:bg-pink-600">
+                            <Link to="/books" className="btn btn-sm btn-primary hover:bg-pink-500">
                                 {getButtonText()}
                             </Link>
                         ) : (
                             <button
                                 onClick={getButtonAction()}
-                                className="btn btn-sm btn-primary hover:bg-pink-600"
+                                className="btn btn-sm btn-primary hover:bg-pink-500"
                             >
                                 {getButtonText()}
                             </button>
@@ -125,6 +130,7 @@ function Freebook() {
 
     var settings = {
         dots: true,
+        arrows: false,
         infinite: false,
         speed: 500,
         slidesToShow: 3,
@@ -137,7 +143,8 @@ function Freebook() {
                     slidesToShow: 3,
                     slidesToScroll: 3,
                     infinite: true,
-                    dots: true
+                    dots: true,
+                    arrows: false
                 }
             },
             {
@@ -145,14 +152,16 @@ function Freebook() {
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 2,
-                    initialSlide: 2
+                    initialSlide: 2,
+                    arrows: false
                 }
             },
             {
                 breakpoint: 480,
                 settings: {
                     slidesToShow: 1,
-                    slidesToScroll: 1
+                    slidesToScroll: 1,
+                    arrows: false
                 }
             }
         ]
@@ -171,7 +180,7 @@ function Freebook() {
     return (
         <>
             <div className='max-w-screen-2xl container mx-auto md-px-20 md:pl-16 md:pr-4 md:mb-16 md:mt-16'>
-                <div>
+                <div className="ml-2 mb-2.5">
                     <h1 className='font-semibold text-xl pb-2'>
                         Available Books 
                     </h1>

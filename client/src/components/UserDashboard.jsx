@@ -7,14 +7,27 @@ import UserHistory from './UserHistory';
 
 function UserDashboard() {
   const [stats, setStats] = useState({
-    totalBooks: 0,
     myRequests: 0,
-    availableBooks: 0,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Check if dark mode is enabled
+    const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const isDark = document.documentElement.classList.contains('dark') || darkModeQuery.matches;
+    setIsDarkMode(isDark);
+
+    const handleDarkModeChange = (e) => {
+      setIsDarkMode(e.matches);
+    };
+
+    darkModeQuery.addEventListener('change', handleDarkModeChange);
+    return () => darkModeQuery.removeEventListener('change', handleDarkModeChange);
+  }, []);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -27,17 +40,11 @@ function UserDashboard() {
           setUser(userObj);
         }
 
-        const booksResponse = await bookAPI.getAllBooks();
-        const totalBooks = booksResponse.data.length;
-        const availableBooks = booksResponse.data.filter(book => book.copiesAvailable > 0).length;
-
         const myRequestsResponse = await issueAPI.getMyRequests();
         const myRequests = myRequestsResponse.data.length;
         
         setStats({
-          totalBooks,
           myRequests,
-          availableBooks,
         });
       } catch (err) {
         if (err.response?.status === 401) {
@@ -52,6 +59,12 @@ function UserDashboard() {
 
     fetchStats();
   }, []);
+
+  const getTabStyle = (isActive) => ({
+    color: isActive 
+      ? (isDarkMode ? 'rgb(255, 255, 255) !important' : 'rgb(0, 0, 0) !important')
+      : (isDarkMode ? 'rgba(255, 255, 255, 0.7) !important' : 'rgba(0, 0, 0, 0.7) !important')
+  });
 
   if (loading) {
     return (
@@ -88,45 +101,30 @@ function UserDashboard() {
     );
   }
 
-  const statsData = [
-    { title: 'Total Books Available', value: stats.totalBooks.toString(), color: 'bg-blue-50 dark:bg-blue-900' },
-    { title: 'My Book Requests', value: stats.myRequests.toString(), color: 'bg-green-50 dark:bg-green-900' },
-    { title: 'Books Available to Request', value: stats.availableBooks.toString(), color: 'bg-amber-50 dark:bg-amber-900' },
-  ];
-
   return (
     <>
       <Navbar />
-      <div className="pt-28 p-6">
-        <h1 className="text-3xl font-bold mb-6">My Dashboard</h1>
+      <div className="bg-white dark:bg-slate-900 pt-28 p-6">
+        <h1 className="text-3xl font-bold mb-6 text-black dark:text-white">My Dashboard</h1>
         
-        {user && (
-          <div className="mb-6">
-            <div className="card bg-base-100 shadow-xl">
-              <div className="card-body">
-                <h2 className="card-title">Welcome, {user.name}!</h2>
-                <p className="text-sm opacity-70">{user.email}</p>
-                <div className="badge badge-secondary">User</div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="tabs tabs-boxed mb-6">
+        <div className="tabs tabs-boxed mb-6 bg-amber-100 dark:bg-slate-800">
           <button
-            className={`tab ${activeTab === 'overview' ? 'tab-active' : ''}`}
+            className={`tab ${activeTab === 'overview' ? 'tab-active bg-white dark:bg-slate-700' : ''}`}
+            style={getTabStyle(activeTab === 'overview')}
             onClick={() => setActiveTab('overview')}
           >
             Overview
           </button>
           <button
-            className={`tab ${activeTab === 'requests' ? 'tab-active' : ''}`}
+            className={`tab ${activeTab === 'requests' ? 'tab-active bg-white dark:bg-slate-700' : ''}`}
+            style={getTabStyle(activeTab === 'requests')}
             onClick={() => setActiveTab('requests')}
           >
             My Book Requests
           </button>
           <button
-            className={`tab ${activeTab === 'history' ? 'tab-active' : ''}`}
+            className={`tab ${activeTab === 'history' ? 'tab-active bg-white dark:bg-slate-700' : ''}`}
+            style={getTabStyle(activeTab === 'history')}
             onClick={() => setActiveTab('history')}
           >
             History
@@ -135,28 +133,29 @@ function UserDashboard() {
 
         {activeTab === 'overview' ? (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {statsData.map((stat, index) => (
-                <div key={index} className={`card ${stat.color} text-black dark:text-white shadow-xl`}>
+            {user && (
+              <div className="mb-6">
+                <div className="card bg-amber-100 dark:bg-slate-800 shadow-xl border border-gray-200 dark:border-gray-700">
                   <div className="card-body">
-                    <h2 className="card-title">{stat.title}</h2>
-                    <p className="text-4xl font-bold">{stat.value}</p>
+                    <h2 className="card-title text-black dark:text-white">Welcome, {user.name}!</h2>
+                    <p className="text-sm opacity-70 text-black dark:text-white">{user.email}</p>
+                    <div className="badge badge-secondary">User</div>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
 
             <div className="mt-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="card bg-base-100 shadow-xl">
+                <div className="card bg-amber-100 dark:bg-slate-800 shadow-xl border border-gray-200 dark:border-gray-700">
                   <div className="card-body">
-                    <h2 className="card-title">My Account</h2>
+                    <h2 className="card-title text-black dark:text-white">My Account</h2>
                     <div className="space-y-2">
-                      <div className="flex justify-between">
+                      <div className="flex justify-between text-black dark:text-white">
                         <span>Status:</span>
                         <span className="badge badge-success">Active</span>
                       </div>
-                      <div className="flex justify-between">
+                      <div className="flex justify-between text-black dark:text-white">
                         <span>Book Requests:</span>
                         <span className="badge badge-info">{stats.myRequests}</span>
                       </div>

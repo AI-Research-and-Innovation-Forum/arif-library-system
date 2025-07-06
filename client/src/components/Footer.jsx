@@ -2,8 +2,8 @@ import React from 'react'
 
 function Footer() {
     return (
-        <div>
-            <footer className="footer footer-horizontal footer-center bg-amber-50 text-black dark:bg-slate-800 dark:text-white rounded p-10">
+        <div className="mt-12">
+            <footer className="footer footer-horizontal footer-center bg-amber-100 text-black dark:bg-slate-800 dark:text-white rounded p-10 border-t border-gray-200 dark:border-gray-700">
                 <nav className="grid grid-flow-col gap-4">
                     <a className="link link-hover">About us</a>
                     <a className="link link-hover">Contact</a>
@@ -48,7 +48,7 @@ function Footer() {
                     </div>
                 </nav>
                 <aside>
-                    <p>Copyright © {new Date().getFullYear()} - All right reserved by ACME Industries Ltd</p>
+                    <p>Copyright © {new Date().getFullYear()} - All right reserved by AI Research and Innovation Forum (ARIF)</p>
                 </aside>
             </footer>
         </div>

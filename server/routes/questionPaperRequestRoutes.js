@@ -14,13 +14,11 @@ import upload from '../middlewares/uploadMiddleware.js';
 
 const router = express.Router();
 
-// User routes
 router.post('/', protectUser, upload.single('file'), submitQuestionPaperRequest);
 router.get('/my-requests', protectUser, getUserQuestionPaperRequests);
 router.get('/my-requests/:id', protectUser, getQuestionPaperRequestById);
 router.delete('/my-requests/:id', protectUser, deleteQuestionPaperRequest);
 
-// Admin routes
 router.get('/', protectAdmin, getAllQuestionPaperRequests);
 router.get('/stats', protectAdmin, getQuestionPaperRequestStats);
 router.get('/:id', protectAdmin, getQuestionPaperRequestById);
