@@ -1,59 +1,14 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
-import { authAPI } from '../services/api';
 
-function Login({ onLoginSuccess }) {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
-    
+function Login() {
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
-
-    const onSubmit = async (data) => {
-        setLoading(true);
-        setError('');
-        
-        try {
-            const response = await authAPI.login(data);
-            const { token, _id, name, email, role } = response.data;
-            
-            // Store token and user data including role
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify({ _id, name, email, role }));
-            
-            // Call the success callback if provided
-            if (onLoginSuccess) {
-                onLoginSuccess({ _id, name, email, role });
-            }
-            
-            // Close the modal
-            document.getElementById("my_modal_3").close();
-            
-            // Redirect based on user role
-            if (role === 'admin') {
-                navigate('/admin/dashboard');
-            } else {
-                navigate('/dashboard');
-            }
-        } catch (err) {
-            setError(err.response?.data?.message || 'Login failed. Please try again.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const openSignupModal = () => {
-        // Close login modal
-        document.getElementById("my_modal_3").close();
-        // Navigate to signup page
-        navigate('/signup');
-    };
-
+    const onSubmit = (data) => console.log(data);
     return (
         <div>
             <dialog id="my_modal_3" className="modal">
@@ -66,13 +21,6 @@ function Login({ onLoginSuccess }) {
                         ✕
                     </Link>
                     <h3 className="font-bold text-lg">Login</h3>
-                    
-                    {error && (
-                        <div className="alert alert-error mt-4">
-                            <span>{error}</span>
-                        </div>
-                    )}
-                    
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className='mt-4 space-y-2'>
                             <span>Email</span>
@@ -82,8 +30,7 @@ function Login({ onLoginSuccess }) {
                                 className='w-80 px-3 py-1 border rounded-md outline-none bg-white text-black dark:bg-slate-700 dark:text-white' 
                                 {...register("email", { required: true })} />
                             <br />
-                            {errors.email && <span className='text-sm text-red-500'>This field is required</span>} 
-                        </div>
+                            {errors.email && <span className='text-sm text-red-500'>This field is required</span>} </div>
                         <div className='mt-4 space-y-2'>
                             <span>Password</span>
                             <br />
@@ -95,21 +42,9 @@ function Login({ onLoginSuccess }) {
                             {errors.password && <span className='text-sm text-red-500'>This field is required</span>}
                         </div>
                         <div className='flex justify-around mt-4'>
-                            <button 
-                                type="submit"
-                                disabled={loading}
-                                className='bg-pink-500 text-white rounded-md px-3 py-1 hover:bg-pink-500 duration-200 disabled:opacity-50'
-                            >
-                                {loading ? 'Logging in...' : 'Login'}
-                            </button>
+                            <button className='bg-pink-500 text-white rounded-md px-3 py-1 hover:bg-pink-700 duration-200'>Login</button>
                             <p>Not registered
-                                <button 
-                                    type="button"
-                                    onClick={openSignupModal}
-                                    className='underline text-blue-500 cursor-pointer'
-                                >
-                                    Signup
-                                </button>
+                                <Link to="/signup" className='underline text-blue-500 cursor-pointer'>Signup</Link>
                             </p>
                         </div>
                     </form>
