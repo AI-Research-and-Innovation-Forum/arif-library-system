@@ -98,7 +98,7 @@ function Login({ onLoginSuccess }) {
                             <button 
                                 type="submit"
                                 disabled={loading}
-                                className='bg-pink-500 text-white rounded-md px-3 py-1 hover:bg-pink-700 duration-200 disabled:opacity-50'
+                                className='bg-pink-500 text-white rounded-md px-3 py-1 hover:bg-pink-500 duration-200 disabled:opacity-50'
                             >
                                 {loading ? 'Logging in...' : 'Login'}
                             </button>

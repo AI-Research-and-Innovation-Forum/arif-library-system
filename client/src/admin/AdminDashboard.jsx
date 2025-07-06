@@ -88,24 +88,24 @@ function AdminDashboard() {
   }
 
   const statsData = [
-    { title: 'Total Books', value: stats.totalBooks.toString(), color: 'bg-blue-50 dark:bg-blue-900', icon: '📚' },
-    { title: 'Available Copies', value: stats.totalCopiesAvailable.toString(), color: 'bg-green-50 dark:bg-green-900', icon: '📖' },
-    { title: 'Currently Issued', value: stats.currentlyIssued.toString(), color: 'bg-amber-50 dark:bg-amber-900', icon: '📚' },
-    { title: 'Total Requests', value: stats.totalRequests.toString(), color: 'bg-purple-50 dark:bg-purple-900', icon: '📋' },
-    { title: 'Pending Approval', value: stats.pendingRequests.toString(), color: 'bg-yellow-50 dark:bg-yellow-900', icon: '⏳' },
-    { title: 'Overdue Books', value: stats.overdueRequests.toString(), color: 'bg-red-50 dark:bg-red-900', icon: '⚠️' },
+    { title: 'Total Books', value: stats.totalBooks.toString(), color: 'bg-white dark:bg-blue-900', icon: '📚' },
+    { title: 'Available Copies', value: stats.totalCopiesAvailable.toString(), color: 'bg-white dark:bg-green-900', icon: '📖' },
+    { title: 'Currently Issued', value: stats.currentlyIssued.toString(), color: 'bg-white dark:bg-amber-900', icon: '📚' },
+    { title: 'Total Requests', value: stats.totalRequests.toString(), color: 'bg-white dark:bg-purple-900', icon: '📋' },
+    { title: 'Pending Approval', value: stats.pendingRequests.toString(), color: 'bg-white dark:bg-yellow-900', icon: '⏳' },
+    { title: 'Overdue Books', value: stats.overdueRequests.toString(), color: 'bg-white dark:bg-red-900', icon: '⚠️' },
   ];
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+    <div className="bg-white dark:bg-slate-900">
+      <h1 className="text-3xl font-bold mb-6 text-black dark:text-white">Admin Dashboard</h1>
       
       {user && (
         <div className="mb-6">
-          <div className="card bg-base-100 shadow-xl">
+          <div className="card bg-white dark:bg-slate-800 shadow-xl border border-gray-200 dark:border-gray-700">
             <div className="card-body">
-              <h2 className="card-title">Welcome, {user.name}!</h2>
-              <p className="text-sm opacity-70">{user.email}</p>
+              <h2 className="card-title text-black dark:text-white">Welcome, {user.name}!</h2>
+              <p className="text-sm opacity-70 text-black dark:text-white">{user.email}</p>
               <div className="badge badge-primary">Administrator</div>
             </div>
           </div>
@@ -114,12 +114,12 @@ function AdminDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {statsData.map((stat, index) => (
-          <div key={index} className={`card ${stat.color} text-black dark:text-white shadow-xl`}>
+          <div key={index} className={`card ${stat.color} text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700`}>
             <div className="card-body">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="card-title text-lg">{stat.title}</h2>
-                  <p className="text-3xl font-bold">{stat.value}</p>
+                  <h2 className="card-title text-lg text-black dark:text-white">{stat.title}</h2>
+                  <p className="text-3xl font-bold text-black dark:text-white">{stat.value}</p>
                 </div>
                 <div className="text-4xl">{stat.icon}</div>
               </div>
@@ -129,24 +129,24 @@ function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="card bg-base-100 shadow-xl">
+        <div className="card bg-white dark:bg-slate-800 shadow-xl border border-gray-200 dark:border-gray-700">
           <div className="card-body">
-            <h2 className="card-title">System Status</h2>
+            <h2 className="card-title text-black dark:text-white">System Status</h2>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span>Database:</span>
+                <span className="text-black dark:text-white">Database:</span>
                 <span className="badge badge-success">Connected</span>
               </div>
               <div className="flex justify-between">
-                <span>API Status:</span>
+                <span className="text-black dark:text-white">API Status:</span>
                 <span className="badge badge-success">Online</span>
               </div>
               <div className="flex justify-between">
-                <span>Book Management:</span>
+                <span className="text-black dark:text-white">Book Management:</span>
                 <span className="badge badge-success">Active</span>
               </div>
               <div className="flex justify-between">
-                <span>Pending Requests:</span>
+                <span className="text-black dark:text-white">Pending Requests:</span>
                 <span className="badge badge-warning">{stats.pendingRequests}</span>
               </div>
             </div>

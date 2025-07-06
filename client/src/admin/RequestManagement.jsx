@@ -90,7 +90,7 @@ function RequestManagement() {
 
   const showSuccessMessage = (message) => {
     const successMessage = document.createElement('div');
-    successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+    successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white dark:text-white px-6 py-3 rounded-lg shadow-lg z-50';
     successMessage.textContent = message;
     document.body.appendChild(successMessage);
     
@@ -101,7 +101,7 @@ function RequestManagement() {
 
   const showErrorMessage = (message) => {
     const errorMessage = document.createElement('div');
-    errorMessage.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+    errorMessage.className = 'fixed top-4 right-4 bg-red-500 text-white dark:text-white px-6 py-3 rounded-lg shadow-lg z-50';
     errorMessage.textContent = message;
     document.body.appendChild(errorMessage);
     
@@ -175,40 +175,40 @@ function RequestManagement() {
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-        <div className="card bg-blue-50 dark:bg-blue-900 text-black dark:text-white shadow-xl">
+        <div className="card bg-white dark:bg-blue-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
           <div className="card-body text-center">
-            <h3 className="card-title justify-center text-sm">Total Requests</h3>
-            <p className="text-2xl font-bold">{stats.total}</p>
+            <h3 className="card-title justify-center text-sm text-black dark:text-white">Total Requests</h3>
+            <p className="text-2xl font-bold text-black dark:text-white">{stats.total}</p>
           </div>
         </div>
-        <div className="card bg-yellow-50 dark:bg-yellow-900 text-black dark:text-white shadow-xl">
+        <div className="card bg-white dark:bg-yellow-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
           <div className="card-body text-center">
-            <h3 className="card-title justify-center text-sm">Pending</h3>
-            <p className="text-2xl font-bold">{stats.pending}</p>
+            <h3 className="card-title justify-center text-sm text-black dark:text-white">Pending</h3>
+            <p className="text-2xl font-bold text-black dark:text-white">{stats.pending}</p>
           </div>
         </div>
-        <div className="card bg-green-50 dark:bg-green-900 text-black dark:text-white shadow-xl">
+        <div className="card bg-white dark:bg-green-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
           <div className="card-body text-center">
-            <h3 className="card-title justify-center text-sm">Approved</h3>
-            <p className="text-2xl font-bold">{stats.approved}</p>
+            <h3 className="card-title justify-center text-sm text-black dark:text-white">Approved</h3>
+            <p className="text-2xl font-bold text-black dark:text-white">{stats.approved}</p>
           </div>
         </div>
-        <div className="card bg-red-50 dark:bg-red-900 text-black dark:text-white shadow-xl">
+        <div className="card bg-white dark:bg-red-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
           <div className="card-body text-center">
-            <h3 className="card-title justify-center text-sm">Rejected</h3>
-            <p className="text-2xl font-bold">{stats.rejected}</p>
+            <h3 className="card-title justify-center text-sm text-black dark:text-white">Rejected</h3>
+            <p className="text-2xl font-bold text-black dark:text-white">{stats.rejected}</p>
           </div>
         </div>
-        <div className="card bg-cyan-50 dark:bg-cyan-900 text-black dark:text-white shadow-xl">
+        <div className="card bg-white dark:bg-cyan-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
           <div className="card-body text-center">
-            <h3 className="card-title justify-center text-sm">Issued</h3>
-            <p className="text-2xl font-bold">{stats.issued}</p>
+            <h3 className="card-title justify-center text-sm text-black dark:text-white">Issued</h3>
+            <p className="text-2xl font-bold text-black dark:text-white">{stats.issued}</p>
           </div>
         </div>
-        <div className="card bg-purple-50 dark:bg-purple-900 text-black dark:text-white shadow-xl">
+        <div className="card bg-white dark:bg-purple-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
           <div className="card-body text-center">
-            <h3 className="card-title justify-center text-sm">Returned</h3>
-            <p className="text-2xl font-bold">{stats.returned}</p>
+            <h3 className="card-title justify-center text-sm text-black dark:text-white">Returned</h3>
+            <p className="text-2xl font-bold text-black dark:text-white">{stats.returned}</p>
           </div>
         </div>
       </div>
@@ -219,7 +219,7 @@ function RequestManagement() {
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="select select-bordered"
+            className="select select-bordered bg-white dark:bg-slate-800 text-black dark:text-white border-gray-300 dark:border-gray-600"
           >
             <option value="all">All Requests</option>
             <option value="requested">Pending</option>

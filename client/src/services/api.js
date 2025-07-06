@@ -1,14 +1,12 @@
 import axios from 'axios';
 
-// Create axios instance with base configuration
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: 'http://localhost:8080/api',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -22,32 +20,30 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/';
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
 );
 
-// Auth API calls
 export const authAPI = {
   register: (userData) => api.post('/auth/register', userData),
   login: (credentials) => api.post('/auth/login', credentials),
+  logout: () => api.post('/auth/logout'),
 };
 
-// User API calls
 export const userAPI = {
   getProfile: () => api.get('/users/profile'),
+  updateProfile: (data) => api.put('/users/profile', data),
   getMyIssuedBooks: () => api.get('/users/my-issued-books'),
 };
 
-// Book API calls
 export const bookAPI = {
   getAllBooks: () => api.get('/books'),
   getBookById: (id) => api.get(`/books/${id}`),
@@ -55,19 +51,16 @@ export const bookAPI = {
   deleteBook: (id) => api.delete(`/books/${id}`),
 };
 
-// Admin API calls
 export const adminAPI = {
   addBook: (bookData) => {
     const formData = new FormData();
     
-    // Add text fields
     formData.append('title', bookData.title);
     formData.append('author', bookData.author);
     formData.append('category', bookData.category);
     formData.append('isbn', bookData.isbn);
     formData.append('copiesAvailable', bookData.copiesAvailable);
     
-    // Add image file if present
     if (bookData.image) {
       formData.append('image', bookData.image);
     }
@@ -86,24 +79,18 @@ export const adminAPI = {
   getAllUsers: () => api.get('/admin/users'),
   getUserWithIssues: (userId) => api.get(`/admin/users/${userId}`),
   getAllUsersWithIssues: () => api.get('/admin/users-with-issues'),
-  // Request Management
   getAllRequests: () => api.get('/admin/requests'),
   getPendingRequests: () => api.get('/admin/requests/pending'),
   approveRequest: (requestId) => api.put(`/admin/requests/${requestId}/approve`),
   rejectRequest: (requestId, reason) => api.put(`/admin/requests/${requestId}/reject`, { reason }),
   returnRequest: (requestId) => api.put(`/admin/requests/${requestId}/return`),
   deleteRequest: (requestId) => api.delete(`/admin/requests/${requestId}`),
-  // Dashboard Stats
   getDashboardStats: () => api.get('/admin/dashboard-stats'),
 };
 
-// Issue API calls
 export const issueAPI = {
-  // User endpoints
   requestBook: (bookId) => api.post('/issues/request', { bookId }),
   getMyRequests: () => api.get('/issues/my-requests'),
-  
-  // Admin endpoints
   approveRequest: (issueId) => api.post('/issues/approve', { issueId }),
   rejectRequest: (issueId, rejectionReason) => api.post('/issues/reject', { issueId, rejectionReason }),
   issueBookDirectly: (issueId) => api.post('/issues/issue-directly', { issueId }),
@@ -112,7 +99,6 @@ export const issueAPI = {
   getRequestStats: () => api.get('/issues/stats'),
 };
 
-// Question Paper API calls
 export const questionPaperAPI = {
   getAllQuestionPapers: (params) => api.get('/question-papers', { params }),
   getQuestionPaperById: (id) => api.get(`/question-papers/${id}`),
@@ -129,7 +115,6 @@ export const questionPaperAPI = {
   getQuestionPaperStats: () => api.get('/question-papers/stats'),
 };
 
-// Question Paper Request API calls
 export const questionPaperRequestAPI = {
   submitRequest: (formData) => api.post('/question-paper-requests', formData, {
     headers: {
@@ -139,7 +124,6 @@ export const questionPaperRequestAPI = {
   getMyRequests: () => api.get('/question-paper-requests/my-requests'),
   getRequestById: (id) => api.get(`/question-paper-requests/my-requests/${id}`),
   deleteRequest: (id) => api.delete(`/question-paper-requests/my-requests/${id}`),
-  // Admin endpoints
   getAllRequests: (params) => api.get('/question-paper-requests', { params }),
   getRequestStats: () => api.get('/question-paper-requests/stats'),
   approveRequest: (id, feedback) => api.put(`/question-paper-requests/${id}/approve`, { feedback }),

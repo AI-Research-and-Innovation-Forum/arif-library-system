@@ -78,7 +78,10 @@ export const issueBookController = async (req, res) => {
     return res.status(404).json({ message: "Book or User not found" });
   }
 
-  const alreadyIssued = await Issue.findOne({ book: bookId, returned: false });
+  const alreadyIssued = await Issue.findOne({ 
+    book: bookId, 
+    status: { $nin: ['returned', 'rejected'] } 
+  });
   if (alreadyIssued) {
     return res
       .status(400)
@@ -88,8 +91,9 @@ export const issueBookController = async (req, res) => {
   const issue = new Issue({
     book: bookId,
     user: userId,
-    issuedAt: new Date(),
-    returned: false,
+    issueDate: new Date(),
+    status: "issued",
+    dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 days from now
   });
 
   await issue.save();
@@ -243,11 +247,14 @@ export const getUserWithIssuesController = async (req, res) => {
 
     const issues = await Issue.find({ user: userId })
       .populate("book", "title author isbn")
-      .sort({ issuedAt: -1 });
+      .sort({ issueDate: -1 });
+
+    // Mark overdue books
+    const updatedIssues = await markOverdueBooks(issues);
 
     res.status(200).json({ 
       user, 
-      issues: { total: issues.length, data: issues } 
+      issues: { total: updatedIssues.length, data: updatedIssues } 
     });
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch user details", error: error.message });
@@ -260,13 +267,19 @@ export const getAllUsersWithIssuesController = async (req, res) => {
     
     const usersWithIssues = await Promise.all(
       users.map(async (user) => {
-        const issues = await Issue.find({ user: user._id, returned: false })
+        const issues = await Issue.find({ 
+          user: user._id, 
+          status: { $nin: ['returned', 'rejected'] } 
+        })
           .populate("book", "title author isbn");
+        
+        // Mark overdue books for this user
+        const updatedIssues = await markOverdueBooks(issues);
         
         return {
           ...user.toObject(),
-          activeIssues: issues.length,
-          currentBooks: issues
+          activeIssues: updatedIssues.length,
+          currentBooks: updatedIssues
         };
       })
     );
@@ -423,4 +436,30 @@ export const returnRequestController = async (req, res) => {
     console.error("Error returning book:", error);
     res.status(500).json({ message: "Failed to return book" });
   }
+};
+
+// Function to mark overdue books
+const markOverdueBooks = async (issues) => {
+  const now = new Date();
+  const updatedIssues = [];
+  
+  for (const issue of issues) {
+    if (issue.status === "issued" && issue.dueDate < now) {
+      // Calculate fine manually
+      const diffTime = now - issue.dueDate;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const fine = diffDays > 0 ? diffDays * 5 : 0;
+      
+      // Update issue status and fine
+      issue.status = "overdue";
+      issue.fine = fine;
+      await issue.save();
+      
+      updatedIssues.push(issue);
+    } else {
+      updatedIssues.push(issue);
+    }
+  }
+  
+  return updatedIssues;
 };
