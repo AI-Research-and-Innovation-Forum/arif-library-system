@@ -144,11 +144,12 @@ function BookManagement() {
 
   return (
     <div className="space-y-6 bg-white dark:bg-slate-900">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-black dark:text-white">Book Management</h1>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-black dark:text-white">Book Management</h1>
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className="btn btn-primary"
+          className="btn btn-primary w-full sm:w-auto"
         >
           {showAddForm ? 'Cancel' : 'Add New Book'}
         </button>
@@ -290,71 +291,125 @@ function BookManagement() {
         </div>
       )}
 
-      <div className="overflow-x-auto bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700">
-        <table className="table w-full">
-          <thead>
-            <tr className="bg-gray-50 dark:bg-slate-700">
-              <th className="text-black dark:text-white">Cover</th>
-              <th className="text-black dark:text-white">Title</th>
-              <th className="text-black dark:text-white">Author</th>
-              <th className="text-black dark:text-white">Category</th>
-              <th className="text-black dark:text-white">ISBN</th>
-              <th className="text-black dark:text-white">Copies</th>
-              <th className="text-black dark:text-white">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {books.map((book) => (
-              <tr key={book._id} className="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 border-b border-gray-200 dark:border-gray-700">
-                <td>
-                  {book.image ? (
-                    <img
-                      src={`http://localhost:8080${book.image}`}
-                      alt={book.title}
-                      className="w-16 h-20 object-cover rounded"
-                    />
-                  ) : (
-                    <div className="w-16 h-20 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center">
-                      <span className="text-xs text-gray-500 dark:text-gray-400">No Image</span>
-                    </div>
-                  )}
-                </td>
-                <td className="text-black dark:text-white">{book.title}</td>
-                <td className="text-black dark:text-white">{book.author}</td>
-                <td className="text-black dark:text-white">{book.category}</td>
-                <td className="text-black dark:text-white">{book.isbn}</td>
-                <td>
-                  <div className="flex items-center space-x-2">
-                    <span className="font-semibold text-black dark:text-white">{book.copiesAvailable}</span>
-                    <button
-                      onClick={() => openCopyModal(book)}
-                      className="btn btn-xs btn-outline"
-                      title="Update copies"
-                    >
-                      ✏️
-                    </button>
-                  </div>
-                </td>
-                <td>
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => openCopyModal(book)}
-                      className="btn btn-info btn-sm"
-                    >
-                      Update Copies
-                    </button>
-                    <button
-                      onClick={() => handleDelete(book._id)}
-                      className="btn btn-error btn-sm"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
+      {/* Book List/Table - Responsive */}
+      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700">
+        {/* Table for md+ screens, cards for small screens */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="table w-full">
+            <thead>
+              <tr className="bg-gray-50 dark:bg-slate-700">
+                <th className="text-black dark:text-white">Cover</th>
+                <th className="text-black dark:text-white">Title</th>
+                <th className="text-black dark:text-white">Author</th>
+                <th className="text-black dark:text-white">Category</th>
+                <th className="text-black dark:text-white">ISBN</th>
+                <th className="text-black dark:text-white">Copies</th>
+                <th className="text-black dark:text-white">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {books.map((book) => (
+                <tr key={book._id} className="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 border-b border-gray-200 dark:border-gray-700">
+                  <td>
+                    {book.image ? (
+                      <img
+                        src={`http://localhost:8080${book.image}`}
+                        alt={book.title}
+                        className="w-16 h-20 object-cover rounded"
+                      />
+                    ) : (
+                      <div className="w-16 h-20 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center">
+                        <span className="text-xs text-gray-500 dark:text-gray-400">No Image</span>
+                      </div>
+                    )}
+                  </td>
+                  <td className="text-black dark:text-white">{book.title}</td>
+                  <td className="text-black dark:text-white">{book.author}</td>
+                  <td className="text-black dark:text-white">{book.category}</td>
+                  <td className="text-black dark:text-white">{book.isbn}</td>
+                  <td>
+                    <div className="flex items-center space-x-2">
+                      <span className="font-semibold text-black dark:text-white">{book.copiesAvailable}</span>
+                      <button
+                        onClick={() => openCopyModal(book)}
+                        className="btn btn-xs btn-outline"
+                        title="Update copies"
+                      >
+                        ✏️
+                      </button>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => openCopyModal(book)}
+                        className="btn btn-info btn-sm"
+                      >
+                        Update Copies
+                      </button>
+                      <button
+                        onClick={() => handleDelete(book._id)}
+                        className="btn btn-error btn-sm"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {/* Card/List layout for small screens */}
+        <div className="md:hidden flex flex-col gap-4 p-2">
+          {books.map((book) => (
+            <div key={book._id} className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 p-4 shadow-sm flex gap-3">
+              <div className="flex-shrink-0">
+                {book.image ? (
+                  <img
+                    src={`http://localhost:8080${book.image}`}
+                    alt={book.title}
+                    className="w-16 h-20 object-cover rounded"
+                  />
+                ) : (
+                  <div className="w-16 h-20 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">No Image</span>
+                  </div>
+                )}
+              </div>
+              <div className="flex-1">
+                <div className="font-semibold text-black dark:text-white text-base mb-1">{book.title}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-300 mb-1">by {book.author}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-300 mb-1">Category: {book.category}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-300 mb-1">ISBN: {book.isbn}</div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="badge badge-info">{book.copiesAvailable} copies</span>
+                  <button
+                    onClick={() => openCopyModal(book)}
+                    className="btn btn-xs btn-outline"
+                    title="Update copies"
+                  >
+                    ✏️
+                  </button>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => openCopyModal(book)}
+                    className="btn btn-info btn-xs"
+                  >
+                    Update Copies
+                  </button>
+                  <button
+                    onClick={() => handleDelete(book._id)}
+                    className="btn btn-error btn-xs"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Copy Update Modal */}

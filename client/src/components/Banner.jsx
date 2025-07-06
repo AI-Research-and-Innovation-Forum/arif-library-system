@@ -7,8 +7,8 @@ export class Banner extends PureComponent {
         <div className="max-w-screen-2xl container mx-auto md-px-20 md:pl-16 md:pr-4 flex flex-col md:flex-row my-10 ">
           <div className="w-full order-2 md:w-1/2 md:order-1 mt-12 md:mt-32">
             <div className='space-y-12 ml-2'>
-              <h1 className='text-4xl font-bold'>Hello, welcome  here to learn something <span className='text-pink-500'>new everyday!!!</span></h1>
-              <p className='text-xl'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum at maxime distinctio totam voluptatibus eligendi natus accusamus sit fuga velit, explicabo, sequi culpa laudantium, eos vel enim. Omnis illo possimus eveniet harum autem quo exercitationem accusantium?</p>
+              <h1 className='text-4xl font-bold whitespace-pre-line'>{`Hello, welcome to your smart library\nlearn something`} <span className='text-pink-500'>new everyday!!!</span></h1>
+              <p className='text-xl whitespace-pre-line'>{`Our Library Management System helps you explore, request, and track books and question papers with ease. Whether you're preparing for exams, exploring new subjects, or revisiting past papers, everything is now just a click away.\n Start learning smarter - request books, view your dashboard, and never miss a deadline.`}</p>
               <label className="input validator w-368 h-54 bg-white text-black border border-black dark:bg-slate-700 dark:text-white dark:border-gray-300">
                 <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2.5" fill="none" stroke="currentColor"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></g></svg>
                 <input type="email" placeholder="mail@site.com" required className="bg-white text-black border-black border dark:bg-slate-700 dark:text-white dark:border-gray-300" />

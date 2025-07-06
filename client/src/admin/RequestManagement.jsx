@@ -173,46 +173,6 @@ function RequestManagement() {
         </div>
       )}
 
-      {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-        <div className="card bg-white dark:bg-blue-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
-          <div className="card-body text-center">
-            <h3 className="card-title justify-center text-sm text-black dark:text-white">Total Requests</h3>
-            <p className="text-2xl font-bold text-black dark:text-white">{stats.total}</p>
-          </div>
-        </div>
-        <div className="card bg-white dark:bg-yellow-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
-          <div className="card-body text-center">
-            <h3 className="card-title justify-center text-sm text-black dark:text-white">Pending</h3>
-            <p className="text-2xl font-bold text-black dark:text-white">{stats.pending}</p>
-          </div>
-        </div>
-        <div className="card bg-white dark:bg-green-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
-          <div className="card-body text-center">
-            <h3 className="card-title justify-center text-sm text-black dark:text-white">Approved</h3>
-            <p className="text-2xl font-bold text-black dark:text-white">{stats.approved}</p>
-          </div>
-        </div>
-        <div className="card bg-white dark:bg-red-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
-          <div className="card-body text-center">
-            <h3 className="card-title justify-center text-sm text-black dark:text-white">Rejected</h3>
-            <p className="text-2xl font-bold text-black dark:text-white">{stats.rejected}</p>
-          </div>
-        </div>
-        <div className="card bg-white dark:bg-cyan-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
-          <div className="card-body text-center">
-            <h3 className="card-title justify-center text-sm text-black dark:text-white">Issued</h3>
-            <p className="text-2xl font-bold text-black dark:text-white">{stats.issued}</p>
-          </div>
-        </div>
-        <div className="card bg-white dark:bg-purple-900 text-black dark:text-white shadow-xl border border-gray-200 dark:border-gray-700">
-          <div className="card-body text-center">
-            <h3 className="card-title justify-center text-sm text-black dark:text-white">Returned</h3>
-            <p className="text-2xl font-bold text-black dark:text-white">{stats.returned}</p>
-          </div>
-        </div>
-      </div>
-
       {/* Filter */}
       <div className="flex justify-between items-center">
         <div className="flex space-x-2">
@@ -236,8 +196,8 @@ function RequestManagement() {
 
       {/* Requests Table */}
       <div className="overflow-x-auto">
-        <table className="table table-zebra w-full">
-          <thead>
+        <table className="table w-full">
+          <thead className="hidden md:table-header-group">
             <tr>
               <th>User</th>
               <th>Book</th>
@@ -248,93 +208,169 @@ function RequestManagement() {
           </thead>
           <tbody>
             {filteredRequests.map((request) => (
-              <tr key={request._id}>
-                <td>
-                  <div>
-                    <div className="font-semibold">{request.user.name}</div>
-                    <div className="text-sm opacity-70">{request.user.email}</div>
-                  </div>
-                </td>
-                <td>
-                  <div className="flex items-center space-x-3">
-                    {request.book.image ? (
-                      <img
-                        src={`http://localhost:8080${request.book.image}`}
-                        alt={request.book.title}
-                        className="w-12 h-16 object-cover rounded"
-                      />
-                    ) : (
-                      <div className="w-12 h-16 bg-gray-200 rounded flex items-center justify-center">
-                        <span className="text-xs text-gray-500">No Image</span>
+              <>
+                {/* Card for small screens */}
+                <tr key={request._id + '-card'} className="block md:hidden mb-4">
+                  <td colSpan={5} className="p-0">
+                    <div className="bg-white dark:bg-slate-800 rounded-lg shadow p-4 flex gap-3">
+                      <div className="w-16 h-24 rounded bg-white dark:bg-slate-700 flex items-center justify-center overflow-hidden shrink-0">
+                        {request.book.image ? (
+                          <img
+                            src={`http://localhost:8080${request.book.image}`}
+                            alt={request.book.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-xs text-gray-500">No Image</span>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-bold text-black dark:text-white text-base mb-1">{request.book.title}</div>
+                        <div className="text-sm text-gray-700 dark:text-gray-300 mb-1">by {request.book.author}</div>
+                        <div className="text-xs text-gray-500 mb-1">{request.user.name} ({request.user.email})</div>
+                        <div className="text-xs text-black dark:text-white mb-1"><span className="font-semibold">Requested:</span> {formatDate(request.issueDate)}</div>
+                        {request.dueDate && (
+                          <div className="text-xs text-black dark:text-white mb-1"><span className="font-semibold">Due Date:</span> {formatDate(request.dueDate)}</div>
+                        )}
+                        <div className="flex items-center gap-2 mt-2">
+                          {getStatusBadge(request.status)}
+                          {request.status === 'returned' && (
+                            <span className="text-xs text-green-600 flex items-center gap-1"><input type="checkbox" checked readOnly className="checkbox checkbox-xs checkbox-success" />Book returned</span>
+                          )}
+                        </div>
+                        {request.rejectionReason && (
+                          <div className="text-xs mt-1 opacity-70 text-red-500">
+                            Reason: {request.rejectionReason}
+                          </div>
+                        )}
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {request.status === 'requested' && (
+                            <>
+                              <button
+                                onClick={() => handleApprove(request._id)}
+                                className="btn btn-success btn-xs"
+                                disabled={request.book.copiesAvailable <= 0}
+                                title={request.book.copiesAvailable <= 0 ? 'No copies available' : 'Approve request'}
+                              >
+                                Approve
+                              </button>
+                              <button
+                                onClick={() => openRejectModal(request)}
+                                className="btn btn-error btn-xs"
+                              >
+                                Reject
+                              </button>
+                            </>
+                          )}
+                          {request.status === 'approved' && (
+                            <button
+                              onClick={() => handleReturn(request._id)}
+                              className="btn btn-info btn-xs"
+                            >
+                              Mark Returned
+                            </button>
+                          )}
+                          <button
+                            onClick={() => openDeleteModal(request)}
+                            className="btn btn-outline btn-error btn-xs"
+                            title="Delete request"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {/* Table row for medium and up */}
+                <tr key={request._id} className="hidden md:table-row bg-white dark:bg-slate-800">
+                  <td>
+                    <div>
+                      <div className="font-semibold">{request.user.name}</div>
+                      <div className="text-sm opacity-70">{request.user.email}</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-16 rounded bg-white dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+                        {request.book.image ? (
+                          <img
+                            src={`http://localhost:8080${request.book.image}`}
+                            alt={request.book.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-xs text-gray-500">No Image</span>
+                        )}
+                      </div>
+                      <div>
+                        <div className="font-semibold text-black dark:text-white">{request.book.title}</div>
+                        <div className="text-sm text-black dark:text-white">by {request.book.author}</div>
+                        <div className="text-xs text-black dark:text-white">Copies: {request.book.copiesAvailable}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="text-sm">
+                      <div>{formatDate(request.issueDate)}</div>
+                      {request.approvedAt && (
+                        <div className="text-xs opacity-70">Approved: {formatDate(request.approvedAt)}</div>
+                      )}
+                      {request.rejectedAt && (
+                        <div className="text-xs opacity-70">Rejected: {formatDate(request.rejectedAt)}</div>
+                      )}
+                      {request.returnDate && (
+                        <div className="text-xs opacity-70">Returned: {formatDate(request.returnDate)}</div>
+                      )}
+                    </div>
+                  </td>
+                  <td>
+                    {getStatusBadge(request.status)}
+                    {request.rejectionReason && (
+                      <div className="text-xs mt-1 opacity-70">
+                        Reason: {request.rejectionReason}
                       </div>
                     )}
-                    <div>
-                      <div className="font-semibold">{request.book.title}</div>
-                      <div className="text-sm opacity-70">by {request.book.author}</div>
-                      <div className="text-xs opacity-60">Copies: {request.book.copiesAvailable}</div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div className="text-sm">
-                    <div>{formatDate(request.issueDate)}</div>
-                    {request.approvedAt && (
-                      <div className="text-xs opacity-70">Approved: {formatDate(request.approvedAt)}</div>
-                    )}
-                    {request.rejectedAt && (
-                      <div className="text-xs opacity-70">Rejected: {formatDate(request.rejectedAt)}</div>
-                    )}
-                    {request.returnDate && (
-                      <div className="text-xs opacity-70">Returned: {formatDate(request.returnDate)}</div>
-                    )}
-                  </div>
-                </td>
-                <td>
-                  {getStatusBadge(request.status)}
-                  {request.rejectionReason && (
-                    <div className="text-xs mt-1 opacity-70">
-                      Reason: {request.rejectionReason}
-                    </div>
-                  )}
-                </td>
-                <td>
-                  <div className="flex flex-wrap gap-2">
-                    {request.status === 'requested' && (
-                      <>
+                  </td>
+                  <td>
+                    <div className="flex flex-wrap gap-2">
+                      {request.status === 'requested' && (
+                        <>
+                          <button
+                            onClick={() => handleApprove(request._id)}
+                            className="btn btn-success btn-xs"
+                            disabled={request.book.copiesAvailable <= 0}
+                            title={request.book.copiesAvailable <= 0 ? 'No copies available' : 'Approve request'}
+                          >
+                            Approve
+                          </button>
+                          <button
+                            onClick={() => openRejectModal(request)}
+                            className="btn btn-error btn-xs"
+                          >
+                            Reject
+                          </button>
+                        </>
+                      )}
+                      {request.status === 'approved' && (
                         <button
-                          onClick={() => handleApprove(request._id)}
-                          className="btn btn-success btn-xs"
-                          disabled={request.book.copiesAvailable <= 0}
-                          title={request.book.copiesAvailable <= 0 ? 'No copies available' : 'Approve request'}
+                          onClick={() => handleReturn(request._id)}
+                          className="btn btn-info btn-xs"
                         >
-                          Approve
+                          Mark Returned
                         </button>
-                        <button
-                          onClick={() => openRejectModal(request)}
-                          className="btn btn-error btn-xs"
-                        >
-                          Reject
-                        </button>
-                      </>
-                    )}
-                    {request.status === 'approved' && (
+                      )}
                       <button
-                        onClick={() => handleReturn(request._id)}
-                        className="btn btn-info btn-xs"
+                        onClick={() => openDeleteModal(request)}
+                        className="btn btn-outline btn-error btn-xs"
+                        title="Delete request"
                       >
-                        Mark Returned
+                        Delete
                       </button>
-                    )}
-                    <button
-                      onClick={() => openDeleteModal(request)}
-                      className="btn btn-outline btn-error btn-xs"
-                      title="Delete request"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
+                    </div>
+                  </td>
+                </tr>
+              </>
             ))}
           </tbody>
         </table>
@@ -357,17 +393,17 @@ function RequestManagement() {
             <h3 className="font-bold text-lg mb-4">Reject Request</h3>
             <div className="space-y-4">
               <div className="flex items-center space-x-4">
-                {selectedRequest.book.image ? (
-                  <img
-                    src={`http://localhost:8080${selectedRequest.book.image}`}
-                    alt={selectedRequest.book.title}
-                    className="w-16 h-20 object-cover rounded"
-                  />
-                ) : (
-                  <div className="w-16 h-20 bg-gray-200 rounded flex items-center justify-center">
+                <div className="w-16 h-20 rounded bg-white dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+                  {selectedRequest.book.image ? (
+                    <img
+                      src={`http://localhost:8080${selectedRequest.book.image}`}
+                      alt={selectedRequest.book.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
                     <span className="text-xs text-gray-500">No Image</span>
-                  </div>
-                )}
+                  )}
+                </div>
                 <div>
                   <h4 className="font-semibold">{selectedRequest.book.title}</h4>
                   <p className="text-sm opacity-70">by {selectedRequest.book.author}</p>
@@ -418,17 +454,17 @@ function RequestManagement() {
             <h3 className="font-bold text-lg mb-4">Delete Request</h3>
             <div className="space-y-4">
               <div className="flex items-center space-x-4">
-                {requestToDelete.book.image ? (
-                  <img
-                    src={`http://localhost:8080${requestToDelete.book.image}`}
-                    alt={requestToDelete.book.title}
-                    className="w-16 h-20 object-cover rounded"
-                  />
-                ) : (
-                  <div className="w-16 h-20 bg-gray-200 rounded flex items-center justify-center">
+                <div className="w-16 h-20 rounded bg-white dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+                  {requestToDelete.book.image ? (
+                    <img
+                      src={`http://localhost:8080${requestToDelete.book.image}`}
+                      alt={requestToDelete.book.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
                     <span className="text-xs text-gray-500">No Image</span>
-                  </div>
-                )}
+                  )}
+                </div>
                 <div>
                   <h4 className="font-semibold">{requestToDelete.book.title}</h4>
                   <p className="text-sm opacity-70">by {requestToDelete.book.author}</p>

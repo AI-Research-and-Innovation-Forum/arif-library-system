@@ -106,24 +106,23 @@ function QuestionPaperManagement() {
     };
 
     return (
-        <div className="p-6">
-            <div className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                    Question Paper Management
-                </h1>
-                <p className="text-gray-600 dark:text-gray-300">
-                    Manage all question papers in the library system. You can upload directly or edit existing papers.
-                </p>
-            </div>
-
-            {/* Upload Button */}
-            <div className="mb-6">
+        <div className="p-2 sm:p-4 md:p-6">
+            {/* Header and Upload Button */}
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+                <div>
+                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">
+                        Question Paper Management
+                    </h1>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
+                        Manage all question papers in the library system. You can upload directly or edit existing papers.
+                    </p>
+                </div>
                 <button
                     onClick={() => {
                         setEditingPaper(null);
                         setShowUploadModal(true);
                     }}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-colors"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 rounded-lg flex items-center gap-2 transition-colors w-full sm:w-auto justify-center"
                 >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
@@ -133,10 +132,10 @@ function QuestionPaperManagement() {
             </div>
 
             {/* Filters */}
-            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 mb-6 border border-gray-200 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Filters</h3>
+            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 sm:p-6 mb-6 border border-gray-200 dark:border-gray-700">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">Filters</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div>
+                    <div className="max-w-xs w-full mx-auto">
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Subject
                         </label>
@@ -145,18 +144,17 @@ function QuestionPaperManagement() {
                             value={filters.subject}
                             onChange={(e) => handleFilterChange('subject', e.target.value)}
                             placeholder="Search by subject..."
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-black dark:text-white"
+                            className="w-full text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-black dark:text-white"
                         />
                     </div>
-                    
-                    <div>
+                    <div className="max-w-xs w-full mx-auto">
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Year
                         </label>
                         <select
                             value={filters.year}
                             onChange={(e) => handleFilterChange('year', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-black dark:text-white"
+                            className="w-full text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-black dark:text-white max-w-xs"
                         >
                             <option value="">All Years</option>
                             {years.map(year => (
@@ -164,15 +162,14 @@ function QuestionPaperManagement() {
                             ))}
                         </select>
                     </div>
-                    
-                    <div>
+                    <div className="max-w-xs w-full mx-auto">
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Semester
                         </label>
                         <select
                             value={filters.semester}
                             onChange={(e) => handleFilterChange('semester', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-black dark:text-white"
+                            className="w-full text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-black dark:text-white max-w-xs"
                         >
                             <option value="">All Semesters</option>
                             {semesters.map(sem => (
@@ -180,8 +177,7 @@ function QuestionPaperManagement() {
                             ))}
                         </select>
                     </div>
-                    
-                    <div>
+                    <div className="max-w-xs w-full mx-auto">
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Course
                         </label>
@@ -190,7 +186,7 @@ function QuestionPaperManagement() {
                             value={filters.course}
                             onChange={(e) => handleFilterChange('course', e.target.value)}
                             placeholder="Search by course..."
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-black dark:text-white"
+                            className="w-full text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-700 text-black dark:text-white"
                         />
                     </div>
                 </div>
@@ -205,14 +201,15 @@ function QuestionPaperManagement() {
                 </div>
             </div>
 
-            {/* Question Papers Table */}
+            {/* Question Papers Table - Responsive */}
             {loading ? (
                 <div className="flex justify-center items-center h-64">
                     <div className="loading loading-spinner loading-lg"></div>
                 </div>
             ) : (
                 <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm overflow-hidden">
-                    <div className="overflow-x-auto">
+                    {/* Table for md+ screens, cards for small screens */}
+                    <div className="hidden md:block overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead className="bg-gray-50 dark:bg-slate-700">
                                 <tr>
@@ -291,29 +288,63 @@ function QuestionPaperManagement() {
                             </tbody>
                         </table>
                     </div>
+                    {/* Card/List layout for small screens */}
+                    <div className="md:hidden flex flex-col gap-4 p-2">
+                        {questionPapers.map((paper) => (
+                            <div key={paper._id} className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 p-4 shadow-sm">
+                                <div className="flex justify-between items-center mb-2">
+                                    <div className="font-semibold text-black dark:text-white text-base">{paper.title}</div>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => handleEdit(paper)}
+                                            className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 text-xs"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(paper._id)}
+                                            className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 text-xs"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="text-xs text-gray-500 dark:text-gray-300 mb-1">{formatFileSize(paper.fileSize)}</div>
+                                <div className="flex flex-wrap gap-2 text-xs mb-1">
+                                    <span className="badge badge-info">{paper.subject}</span>
+                                    <span className="badge badge-secondary">{paper.year} / {paper.semester} Sem</span>
+                                    <span className="badge badge-primary">{paper.course}</span>
+                                </div>
+                                <div className="flex flex-wrap gap-2 text-xs mb-1">
+                                    <span className="text-gray-700 dark:text-gray-200">Downloads: {paper.downloads}</span>
+                                    <span className="text-gray-700 dark:text-gray-200">Uploaded: {formatDate(paper.createdAt)}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
 
                     {/* Pagination */}
                     {pagination.totalPages > 1 && (
-                        <div className="bg-white dark:bg-slate-800 px-4 py-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 sm:px-6">
-                            <div className="flex-1 flex justify-between sm:hidden">
+                        <div className="bg-white dark:bg-slate-800 px-2 sm:px-4 py-3 flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 dark:border-gray-700 gap-2">
+                            <div className="flex-1 flex justify-between w-full sm:w-auto sm:hidden">
                                 <button
                                     onClick={() => handlePageChange(pagination.currentPage - 1)}
                                     disabled={pagination.currentPage === 1}
-                                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 w-1/2"
                                 >
                                     Previous
                                 </button>
                                 <button
                                     onClick={() => handlePageChange(pagination.currentPage + 1)}
                                     disabled={pagination.currentPage === pagination.totalPages}
-                                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 w-1/2"
                                 >
                                     Next
                                 </button>
                             </div>
-                            <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                            <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between w-full sm:w-auto">
                                 <div>
-                                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                                    <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
                                         Showing <span className="font-medium">{((pagination.currentPage - 1) * pagination.itemsPerPage) + 1}</span> to{' '}
                                         <span className="font-medium">
                                             {Math.min(pagination.currentPage * pagination.itemsPerPage, pagination.totalItems)}

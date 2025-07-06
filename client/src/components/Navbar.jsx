@@ -127,7 +127,7 @@ function Navbar() {
                                 <div className="flex items-center gap-2">
                                     <Link 
                                         to="/signup"
-                                        className="bg-white text-black border border-black dark:bg-slate-700 dark:text-white dark:border-gray-300 px-3 py-2 rounded-md hover:bg-pink-500 duration-300 cursor-pointer"
+                                        className="bg-white text-black border border-black dark:bg-slate-700 dark:text-white dark:border-gray-300 px-3 py-2 rounded-md hover:bg-pink-500 duration-300 cursor-pointer hidden sm:inline-block"
                                     >
                                         Signup
                                     </Link>
