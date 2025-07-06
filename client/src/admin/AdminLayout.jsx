@@ -9,7 +9,6 @@ function AdminLayout({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is admin
     const userData = localStorage.getItem('user');
     if (userData) {
       const user = JSON.parse(userData);
@@ -18,7 +17,6 @@ function AdminLayout({ children }) {
     setLoading(false);
   }, []);
 
-  // Show loading while checking admin status
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -27,7 +25,6 @@ function AdminLayout({ children }) {
     );
   }
 
-  // Redirect non-admin users
   if (!isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -63,7 +60,6 @@ function AdminLayout({ children }) {
           </nav>
         </aside>
 
-        {/* Overlay */}
         {isSidebarOpen && (
           <div
             className="fixed inset-0 bg-black opacity-50 z-30 lg:hidden"
@@ -71,9 +67,7 @@ function AdminLayout({ children }) {
           ></div>
         )}
 
-        {/* Main Content */}
         <main className="flex-1 p-6 pt-28 overflow-y-auto lg:ml-64 bg-white dark:bg-slate-900">
-          {/* Hamburger button */}
           <button
             className="lg:hidden p-2 mb-4 rounded-md bg-white text-black dark:bg-slate-800 dark:text-white shadow-md"
             onClick={() => setSidebarOpen(!isSidebarOpen)}
