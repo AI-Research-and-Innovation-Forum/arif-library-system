@@ -6,7 +6,7 @@ export class Banner extends PureComponent {
       <>
         <div className="max-w-screen-2xl container mx-auto md-px-20 md:pl-16 md:pr-4 flex flex-col md:flex-row my-10 ">
           <div className="w-full order-2 md:w-1/2 md:order-1 mt-12 md:mt-32">
-            <div className='space-y-12'>
+            <div className='space-y-12 ml-2'>
               <h1 className='text-4xl font-bold'>Hello, welcome  here to learn something <span className='text-pink-500'>new everyday!!!</span></h1>
               <p className='text-xl'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum at maxime distinctio totam voluptatibus eligendi natus accusamus sit fuga velit, explicabo, sequi culpa laudantium, eos vel enim. Omnis illo possimus eveniet harum autem quo exercitationem accusantium?</p>
               <label className="input validator w-368 h-54 bg-white text-black border border-black dark:bg-slate-700 dark:text-white dark:border-gray-300">
@@ -15,7 +15,7 @@ export class Banner extends PureComponent {
               </label>
 
             </div>
-            <button className="btn btn-secondary mt-4">Secondary</button>
+            <button className="btn btn-secondary mt-4 ml-2">Secondary</button>
             <div className="validator-hint hidden">Enter valid email address</div>
           </div>
           <div className=" order-1 w-full md:w-1/2">
