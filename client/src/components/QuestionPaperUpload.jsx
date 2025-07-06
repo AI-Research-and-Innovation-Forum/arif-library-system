@@ -190,7 +190,7 @@ function QuestionPaperUpload({ onClose, onSuccess, editingPaper }) {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-white dark:bg-black rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                 <div className="p-6">
                     <div className="flex items-center justify-between mb-6">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -254,7 +254,7 @@ function QuestionPaperUpload({ onClose, onSuccess, editingPaper }) {
                                 value={formData.title}
                                 onChange={handleInputChange}
                                 placeholder="Enter question paper title"
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white ${
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 bg-white dark:bg-slate-800 text-black dark:text-white ${
                                     errors.title ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                                 }`}
                             />
@@ -275,7 +275,7 @@ function QuestionPaperUpload({ onClose, onSuccess, editingPaper }) {
                                     value={formData.subject}
                                     onChange={handleInputChange}
                                     placeholder="e.g., Mathematics, Physics"
-                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white ${
+                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 bg-white dark:bg-slate-800 text-black dark:text-white ${
                                         errors.subject ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                                     }`}
                                 />
@@ -292,7 +292,7 @@ function QuestionPaperUpload({ onClose, onSuccess, editingPaper }) {
                                     name="semester"
                                     value={formData.semester}
                                     onChange={handleInputChange}
-                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white ${
+                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 bg-white dark:bg-slate-800 text-black dark:text-white ${
                                         errors.semester ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                                     }`}
                                 >
@@ -317,7 +317,7 @@ function QuestionPaperUpload({ onClose, onSuccess, editingPaper }) {
                                     name="year"
                                     value={formData.year}
                                     onChange={handleInputChange}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
+                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 bg-white dark:bg-slate-800 text-black dark:text-white"
                                 >
                                     {years.map(year => (
                                         <option key={year} value={year}>{year}</option>
@@ -335,7 +335,7 @@ function QuestionPaperUpload({ onClose, onSuccess, editingPaper }) {
                                     value={formData.course}
                                     onChange={handleInputChange}
                                     placeholder="e.g., B.Tech CSE, BCA"
-                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white ${
+                                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 bg-white dark:bg-slate-800 text-black dark:text-white ${
                                         errors.course ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                                     }`}
                                 />
@@ -356,7 +356,7 @@ function QuestionPaperUpload({ onClose, onSuccess, editingPaper }) {
                                 onChange={handleInputChange}
                                 placeholder="Optional description about the question paper"
                                 rows="3"
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white"
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 bg-white dark:bg-slate-800 text-black dark:text-white"
                             />
                         </div>
 
@@ -379,7 +379,7 @@ function QuestionPaperUpload({ onClose, onSuccess, editingPaper }) {
                                             <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                         </svg>
                                         <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
-                                            <span className="font-medium text-blue-600 hover:text-blue-500">
+                                            <span className="font-medium text-pink-600 dark:text-pink-400 hover:text-pink-500">
                                                 Click to upload
                                             </span> or drag and drop
                                         </p>
@@ -406,19 +406,19 @@ function QuestionPaperUpload({ onClose, onSuccess, editingPaper }) {
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-slate-700 rounded-md hover:bg-gray-300 dark:hover:bg-slate-600 transition-colors"
+                                className="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                             >
                                 Cancel
                             </button>
                             <button
                                 type="submit"
                                 disabled={uploading}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                className="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:bg-pink-300 disabled:cursor-not-allowed"
                             >
                                 {uploading ? (
                                     <>
                                         <div className="loading loading-spinner loading-xs mr-2"></div>
-                                        {isEditing ? 'Updating...' : 'Processing...'}
+                                        Submitting...
                                     </>
                                 ) : (
                                     isEditing ? 'Update Question Paper' : (isAdmin ? 'Upload Question Paper' : 'Submit Request')
