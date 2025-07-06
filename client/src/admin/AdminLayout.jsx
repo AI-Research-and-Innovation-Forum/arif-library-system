@@ -1,10 +1,46 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import Navbar from '../components/navbar';
+import React, { useState, useEffect } from 'react';
+import { NavLink, Navigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 function AdminLayout({ children }) {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Check if user is admin
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      const user = JSON.parse(userData);
+      setIsAdmin(user.role === 'admin');
+    }
+    setLoading(false);
+  }, []);
+
+  console.log('AdminLayout rendering with children:', children, 'isAdmin:', isAdmin);
+
+  // Show loading while checking admin status
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="loading loading-spinner loading-lg"></div>
+      </div>
+    );
+  }
+
+  // Redirect non-admin users
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold mb-4">Access Denied</h1>
+          <p className="text-lg mb-6">You don't have permission to access the admin panel.</p>
+          <NavLink to="/" className="btn btn-primary">Go to Home</NavLink>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -19,10 +55,12 @@ function AdminLayout({ children }) {
           <h1 className="text-2xl font-bold mb-4">Admin Panel</h1>
           <nav>
             <ul>
-              <li><NavLink to="dashboard" className="block py-2 px-4 rounded hover:bg-pink-500 hover:text-white" onClick={() => setSidebarOpen(false)}>Dashboard</NavLink></li>
-              <li><NavLink to="books" className="block py-2 px-4 rounded hover:bg-pink-500 hover:text-white" onClick={() => setSidebarOpen(false)}>Book Management</NavLink></li>
-              <li><NavLink to="requests" className="block py-2 px-4 rounded hover:bg-pink-500 hover:text-white" onClick={() => setSidebarOpen(false)}>Request Management</NavLink></li>
-              <li><NavLink to="users" className="block py-2 px-4 rounded hover:bg-pink-500 hover:text-white" onClick={() => setSidebarOpen(false)}>User Management</NavLink></li>
+              <li><NavLink to="/admin/dashboard" className="block py-2 px-4 rounded hover:bg-pink-500 hover:text-white" onClick={() => setSidebarOpen(false)}>Dashboard</NavLink></li>
+              <li><NavLink to="/admin/books" className="block py-2 px-4 rounded hover:bg-pink-500 hover:text-white" onClick={() => setSidebarOpen(false)}>Book Management</NavLink></li>
+              <li><NavLink to="/admin/question-papers" className="block py-2 px-4 rounded hover:bg-pink-500 hover:text-white" onClick={() => setSidebarOpen(false)}>Question Papers</NavLink></li>
+              <li><NavLink to="/admin/question-paper-requests" className="block py-2 px-4 rounded hover:bg-pink-500 hover:text-white" onClick={() => setSidebarOpen(false)}>Question Paper Requests</NavLink></li>
+              <li><NavLink to="/admin/requests" className="block py-2 px-4 rounded hover:bg-pink-500 hover:text-white" onClick={() => setSidebarOpen(false)}>Request Management</NavLink></li>
+              <li><NavLink to="/admin/users" className="block py-2 px-4 rounded hover:bg-pink-500 hover:text-white" onClick={() => setSidebarOpen(false)}>User Management</NavLink></li>
             </ul>
           </nav>
         </aside>
@@ -46,6 +84,12 @@ function AdminLayout({ children }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
             </svg>
           </button>
+          
+          {/* Debug info */}
+          <div className="bg-yellow-100 p-4 mb-4 rounded">
+            <p className="text-black">AdminLayout Debug: Children should render below</p>
+          </div>
+          
           {children}
         </main>
       </div>

@@ -1,16 +1,29 @@
 import express from "express";
 import {
-  issueBook,
-  returnBook,
-  getUserIssuedBooks,
+  requestBook,
+  approveBookRequest,
+  rejectBookRequest,
+  issueBookDirectly,
+  returnBookDirectly,
+  getUserBookRequests,
+  getAllBookRequests,
+  getBookRequestStats,
 } from "../controllers/issueController.js";
 
-import { protect } from "../middlewares/authMiddleware.js";
+import { protectUser, protectAdmin } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/issue", protect, issueBook);
-router.post("/return", protect, returnBook);
-router.get("/mybooks", protect, getUserIssuedBooks);
+// User routes
+router.post("/request", protectUser, requestBook);
+router.get("/my-requests", protectUser, getUserBookRequests);
+
+// Admin routes
+router.post("/approve", protectAdmin, approveBookRequest);
+router.post("/reject", protectAdmin, rejectBookRequest);
+router.post("/issue-directly", protectAdmin, issueBookDirectly);
+router.post("/return-directly", protectAdmin, returnBookDirectly);
+router.get("/all", protectAdmin, getAllBookRequests);
+router.get("/stats", protectAdmin, getBookRequestStats);
 
 export default router;
