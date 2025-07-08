@@ -1,46 +1,52 @@
 import express from "express";
 import dotenv from "dotenv";
-import connectDB from "./DB/db.js";
-import colors from "colors";
 import cors from "cors";
-import morgan from "morgan";
-import "express-async-errors";
-
-import { errorHandler } from "./helpers/errorHandler.js";
+import connectDB from "./DB/db.js";
+import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import adminRoutes from "./routes/adminRoutes.js";
 import bookRoutes from "./routes/bookRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
+import issueRoutes from "./routes/issueRoutes.js";
+import questionPaperRoutes from "./routes/questionPaperRoutes.js";
+import questionPaperRequestRoutes from "./routes/questionPaperRequestRoutes.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
-
-connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-<<<<<<< Updated upstream
-app.use(cors());
-=======
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://arif-library-system.onrender.com"
+    "https://arif-library-system.onrender.com",
+    "https://arif-library-management.netlify.app"
   ],
   credentials: true
 }));
->>>>>>> Stashed changes
 app.use(express.json());
-app.use(morgan("dev"));
+app.use(express.urlencoded({ extended: true }));
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/admin", adminRoutes);
 app.use("/api/books", bookRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/issues", issueRoutes);
+app.use("/api/question-papers", questionPaperRoutes);
+app.use("/api/question-paper-requests", questionPaperRequestRoutes);
 
-app.use(errorHandler);
+app.get("/", (req, res) => {
+  res.send("Library Management System API is running!");
+});
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`.bgMagenta);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 });
