@@ -12,8 +12,8 @@ export const addBookController = async (req, res) => {
   }
 
   let imageUrl = null;
-  if (req.file) {
-    imageUrl = `/uploads/${req.file.filename}`;
+  if (req.file && req.file.path) {
+    imageUrl = req.file.path;
   }
 
   const book = new Book({
