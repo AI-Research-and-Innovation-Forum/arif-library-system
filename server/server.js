@@ -18,7 +18,20 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+<<<<<<< Updated upstream
 app.use(cors());
+=======
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://arif-library-system.onrender.com"
+  ],
+  credentials: true
+}));
+>>>>>>> Stashed changes
 app.use(express.json());
 app.use(morgan("dev"));
 
