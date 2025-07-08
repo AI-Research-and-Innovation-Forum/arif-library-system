@@ -23,7 +23,8 @@ const __dirname = path.dirname(__filename);
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://arif-library-system.onrender.com"
+    "https://arif-library-system.onrender.com",
+    "https://arif-library-management.netlify.app"
   ],
   credentials: true
 }));
