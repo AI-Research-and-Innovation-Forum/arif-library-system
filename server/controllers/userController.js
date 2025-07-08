@@ -12,7 +12,7 @@ export const getUserProfile = async (req, res) => {
 export const myIssuedBooksController = async (req, res) => {
   try {
     const issuedBooks = await Issue.find({ user: req.user._id })
-      .populate("book", "title author isbn")
+      .populate("book", "title author isbn image category")
       .sort({ issueDate: -1 });
 
     res.status(200).json({
