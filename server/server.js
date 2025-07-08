@@ -20,7 +20,14 @@ const PORT = process.env.PORT || 8080;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://arif-library-system.onrender.com"
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
