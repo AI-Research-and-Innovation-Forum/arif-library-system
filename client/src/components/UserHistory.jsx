@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { userAPI } from '../services/api';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://arif-library-system.onrender.com";
+
 function UserHistory() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -120,9 +122,9 @@ function UserHistory() {
                     <div className="flex items-start space-x-4">
                       {item.book.image ? (
                         <img
-                          src={`http://localhost:8080${item.book.image}`}
+                          src={item.book.image}
                           alt={item.book.title}
-                          className="w-16 h-24 rounded flex-shrink-0"
+                          className="w-16 h-20 object-cover rounded"
                         />
                       ) : (
                         <div className="w-16 h-24 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center flex-shrink-0">

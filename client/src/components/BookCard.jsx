@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://arif-library-system.onrender.com";
+
 function BookCard({ book, onRequest, user }) {
   const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -58,7 +60,7 @@ function BookCard({ book, onRequest, user }) {
         <figure className="h-48">
           {book.image ? (
             <img
-              src={`http://localhost:8080${book.image}`}
+              src={book.image}
               alt={book.title}
               className="w-full h-full"
             />
@@ -122,7 +124,7 @@ function BookCard({ book, onRequest, user }) {
               <div className="flex items-center space-x-4">
                 {book.image ? (
                   <img
-                    src={`http://localhost:8080${book.image}`}
+                    src={book.image}
                     alt={book.title}
                     className="w-16 h-20 object-cover rounded"
                   />

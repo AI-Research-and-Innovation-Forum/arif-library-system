@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { issueAPI } from '../services/api';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://arif-library-system.onrender.com";
+
 const UserBookRequests = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -95,7 +97,7 @@ const UserBookRequests = () => {
                   <div className="flex items-start space-x-4">
                     {request.book.image ? (
                       <img
-                        src={`http://localhost:8080${request.book.image}`}
+                        src={request.book.image}
                         alt={request.book.title}
                         className="w-16 h-20 object-cover rounded"
                       />
