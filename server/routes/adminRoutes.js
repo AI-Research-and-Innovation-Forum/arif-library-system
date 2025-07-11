@@ -1,6 +1,6 @@
 import express from "express";
 import { protectAdmin } from "../middlewares/authMiddleware.js";
-import upload from "../middlewares/uploadMiddleware.js";
+import getUploadMiddleware from "../middlewares/uploadMiddleware.js";
 import {
   addBookController,
   deleteBookController,
@@ -22,7 +22,9 @@ import {
 
 const router = express.Router();
 
-router.post("/add-book", protectAdmin, upload.single('image'), addBookController);
+const uploadLibraryBook = getUploadMiddleware('library-books');
+
+router.post("/add-book", protectAdmin, uploadLibraryBook.single('image'), addBookController);
 router.delete("/delete-book/:bookId", protectAdmin, deleteBookController);
 router.put("/update-book-copies/:bookId", protectAdmin, updateBookCopiesController);
 router.post("/issue-book", protectAdmin, issueBookController);
