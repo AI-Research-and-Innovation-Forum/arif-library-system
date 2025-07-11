@@ -1,5 +1,7 @@
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
 import cors from "cors";
 import connectDB from "./DB/db.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -11,8 +13,7 @@ import questionPaperRoutes from "./routes/questionPaperRoutes.js";
 import questionPaperRequestRoutes from "./routes/questionPaperRequestRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
-
-dotenv.config();
+import cloudinary from './helpers/cloudinary.js';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -56,7 +57,12 @@ app.get("/", (req, res) => {
   res.send("Library Management System API is running!");
 });
 
+app.use((err, req, res, next) => {
+  res.status(500).json({ message: err.message || 'Internal Server Error' });
+});
+
 connectDB().then(() => {
+  console.log('Connected to MongoDB Database');
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
