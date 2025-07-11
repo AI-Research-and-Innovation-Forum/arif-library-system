@@ -21,28 +21,19 @@ const PORT = process.env.PORT || 8080;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://arif-library-system.onrender.com",
+  "https://arif-library-management.netlify.app"
+];
+
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://arif-library-system.onrender.com",
-    "https://arif-library-management.netlify.app"
-  ],
+  origin: allowedOrigins,
   credentials: true
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/uploads', (req, res, next) => {
-  const allowedOrigins = [
-    "http://localhost:5173",
-    "https://arif-library-management.netlify.app"
-  ];
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
-  }
-  next();
-});
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/api/auth", authRoutes);
