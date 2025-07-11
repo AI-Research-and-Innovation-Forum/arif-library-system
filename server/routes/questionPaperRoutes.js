@@ -18,11 +18,11 @@ router.get('/stats', getQuestionPaperStats);
 router.get('/:id', getQuestionPaperById);
 router.get('/:id/download', downloadQuestionPaper);
 
-const uploadQuestionPaper = getUploadMiddleware('question-papers');
-router.post('/', protectUser, uploadQuestionPaper.single('file'), (req, res, next) => {
+const uploadQuestionPaperMiddleware = getUploadMiddleware('question-papers');
+router.post('/', protectUser, uploadQuestionPaperMiddleware.single('file'), (req, res, next) => {
   console.log('ROUTE HIT', req.body, req.file);
   next();
-}, uploadQuestionPaperController);
+}, uploadQuestionPaper);
 router.put('/:id', protectUser, updateQuestionPaper);
 router.delete('/:id', protectUser, deleteQuestionPaper);
 
