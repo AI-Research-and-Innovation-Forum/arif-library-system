@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../services/api';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://arif-library-system.onrender.com";
+
 function RequestManagement() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -208,16 +210,16 @@ function RequestManagement() {
           </thead>
           <tbody>
             {filteredRequests.map((request) => (
-              <>
+              <React.Fragment key={request?._id}>
                 {/* Card for small screens */}
-                <tr key={request._id + '-card'} className="block md:hidden mb-4">
+                <tr key={request?._id + '-card'} className="block md:hidden mb-4">
                   <td colSpan={5} className="p-0">
                     <div className="bg-white dark:bg-slate-800 rounded-lg shadow p-4 flex gap-3">
                       <div className="w-16 h-24 rounded bg-white dark:bg-slate-700 flex items-center justify-center overflow-hidden shrink-0">
-                        {request.book.image ? (
+                        {request?.book?.image ? (
                           <img
-                            src={`http://localhost:8080${request.book.image}`}
-                            alt={request.book.title}
+                            src={request.book.image}
+                            alt={request.book.title || 'Book'}
                             className="w-full h-full object-cover"
                           />
                         ) : (
@@ -225,32 +227,32 @@ function RequestManagement() {
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="font-bold text-black dark:text-white text-base mb-1">{request.book.title}</div>
-                        <div className="text-sm text-gray-700 dark:text-gray-300 mb-1">by {request.book.author}</div>
-                        <div className="text-xs text-gray-500 mb-1">{request.user.name} ({request.user.email})</div>
-                        <div className="text-xs text-black dark:text-white mb-1"><span className="font-semibold">Requested:</span> {formatDate(request.issueDate)}</div>
-                        {request.dueDate && (
+                        <div className="font-bold text-black dark:text-white text-base mb-1">{request?.book?.title || 'Unknown Title'}</div>
+                        <div className="text-sm text-gray-700 dark:text-gray-300 mb-1">by {request?.book?.author || 'Unknown Author'}</div>
+                        <div className="text-xs text-gray-500 mb-1">{request?.user?.name || 'Unknown User'} ({request?.user?.email || 'No Email'})</div>
+                        <div className="text-xs text-black dark:text-white mb-1"><span className="font-semibold">Requested:</span> {formatDate(request?.issueDate)}</div>
+                        {request?.dueDate && (
                           <div className="text-xs text-black dark:text-white mb-1"><span className="font-semibold">Due Date:</span> {formatDate(request.dueDate)}</div>
                         )}
                         <div className="flex items-center gap-2 mt-2">
-                          {getStatusBadge(request.status)}
-                          {request.status === 'returned' && (
+                          {getStatusBadge(request?.status)}
+                          {request?.status === 'returned' && (
                             <span className="text-xs text-green-600 flex items-center gap-1"><input type="checkbox" checked readOnly className="checkbox checkbox-xs checkbox-success" />Book returned</span>
                           )}
                         </div>
-                        {request.rejectionReason && (
+                        {request?.rejectionReason && (
                           <div className="text-xs mt-1 opacity-70 text-red-500">
                             Reason: {request.rejectionReason}
                           </div>
                         )}
                         <div className="flex flex-wrap gap-2 mt-3">
-                          {request.status === 'requested' && (
+                          {request?.status === 'requested' && (
                             <>
                               <button
                                 onClick={() => handleApprove(request._id)}
                                 className="btn btn-success btn-xs"
-                                disabled={request.book.copiesAvailable <= 0}
-                                title={request.book.copiesAvailable <= 0 ? 'No copies available' : 'Approve request'}
+                                disabled={request?.book?.copiesAvailable <= 0}
+                                title={request?.book?.copiesAvailable <= 0 ? 'No copies available' : 'Approve request'}
                               >
                                 Approve
                               </button>
@@ -262,7 +264,7 @@ function RequestManagement() {
                               </button>
                             </>
                           )}
-                          {request.status === 'approved' && (
+                          {request?.status === 'approved' && (
                             <button
                               onClick={() => handleReturn(request._id)}
                               className="btn btn-info btn-xs"
@@ -283,20 +285,20 @@ function RequestManagement() {
                   </td>
                 </tr>
                 {/* Table row for medium and up */}
-                <tr key={request._id} className="hidden md:table-row bg-white dark:bg-slate-800">
+                <tr key={request?._id} className="hidden md:table-row bg-white dark:bg-slate-800">
                   <td>
                     <div>
-                      <div className="font-semibold">{request.user.name}</div>
-                      <div className="text-sm opacity-70">{request.user.email}</div>
+                      <div className="font-semibold">{request?.user?.name || 'Unknown User'}</div>
+                      <div className="text-sm opacity-70">{request?.user?.email || 'No Email'}</div>
                     </div>
                   </td>
                   <td>
                     <div className="flex items-center space-x-3">
                       <div className="w-12 h-16 rounded bg-white dark:bg-slate-800 flex items-center justify-center overflow-hidden">
-                        {request.book.image ? (
+                        {request?.book?.image ? (
                           <img
-                            src={`http://localhost:8080${request.book.image}`}
-                            alt={request.book.title}
+                            src={request.book.image}
+                            alt={request.book.title || 'Book'}
                             className="w-full h-full object-cover"
                           />
                         ) : (
@@ -304,29 +306,29 @@ function RequestManagement() {
                         )}
                       </div>
                       <div>
-                        <div className="font-semibold text-black dark:text-white">{request.book.title}</div>
-                        <div className="text-sm text-black dark:text-white">by {request.book.author}</div>
-                        <div className="text-xs text-black dark:text-white">Copies: {request.book.copiesAvailable}</div>
+                        <div className="font-semibold text-black dark:text-white">{request?.book?.title || 'Unknown Title'}</div>
+                        <div className="text-sm text-black dark:text-white">by {request?.book?.author || 'Unknown Author'}</div>
+                        <div className="text-xs text-black dark:text-white">Copies: {request?.book?.copiesAvailable ?? 'N/A'}</div>
                       </div>
                     </div>
                   </td>
                   <td>
                     <div className="text-sm">
-                      <div>{formatDate(request.issueDate)}</div>
-                      {request.approvedAt && (
+                      <div>{formatDate(request?.issueDate)}</div>
+                      {request?.approvedAt && (
                         <div className="text-xs opacity-70">Approved: {formatDate(request.approvedAt)}</div>
                       )}
-                      {request.rejectedAt && (
+                      {request?.rejectedAt && (
                         <div className="text-xs opacity-70">Rejected: {formatDate(request.rejectedAt)}</div>
                       )}
-                      {request.returnDate && (
+                      {request?.returnDate && (
                         <div className="text-xs opacity-70">Returned: {formatDate(request.returnDate)}</div>
                       )}
                     </div>
                   </td>
                   <td>
-                    {getStatusBadge(request.status)}
-                    {request.rejectionReason && (
+                    {getStatusBadge(request?.status)}
+                    {request?.rejectionReason && (
                       <div className="text-xs mt-1 opacity-70">
                         Reason: {request.rejectionReason}
                       </div>
@@ -334,13 +336,13 @@ function RequestManagement() {
                   </td>
                   <td>
                     <div className="flex flex-wrap gap-2">
-                      {request.status === 'requested' && (
+                      {request?.status === 'requested' && (
                         <>
                           <button
                             onClick={() => handleApprove(request._id)}
                             className="btn btn-success btn-xs"
-                            disabled={request.book.copiesAvailable <= 0}
-                            title={request.book.copiesAvailable <= 0 ? 'No copies available' : 'Approve request'}
+                            disabled={request?.book?.copiesAvailable <= 0}
+                            title={request?.book?.copiesAvailable <= 0 ? 'No copies available' : 'Approve request'}
                           >
                             Approve
                           </button>
@@ -352,7 +354,7 @@ function RequestManagement() {
                           </button>
                         </>
                       )}
-                      {request.status === 'approved' && (
+                      {request?.status === 'approved' && (
                         <button
                           onClick={() => handleReturn(request._id)}
                           className="btn btn-info btn-xs"
@@ -370,7 +372,7 @@ function RequestManagement() {
                     </div>
                   </td>
                 </tr>
-              </>
+              </React.Fragment>
             ))}
           </tbody>
         </table>
@@ -394,20 +396,20 @@ function RequestManagement() {
             <div className="space-y-4">
               <div className="flex items-center space-x-4">
                 <div className="w-16 h-20 rounded bg-white dark:bg-slate-800 flex items-center justify-center overflow-hidden">
-                  {selectedRequest.book.image ? (
+                  {selectedRequest?.book?.image ? (
                     <img
-                      src={`http://localhost:8080${selectedRequest.book.image}`}
-                      alt={selectedRequest.book.title}
-                      className="w-full h-full object-cover"
+                      src={selectedRequest.book.image}
+                      alt={selectedRequest.book.title || 'Book'}
+                      className="w-16 h-20 object-cover rounded"
                     />
                   ) : (
                     <span className="text-xs text-gray-500">No Image</span>
                   )}
                 </div>
                 <div>
-                  <h4 className="font-semibold">{selectedRequest.book.title}</h4>
-                  <p className="text-sm opacity-70">by {selectedRequest.book.author}</p>
-                  <p className="text-xs opacity-60">Requested by: {selectedRequest.user.name}</p>
+                  <h4 className="font-semibold">{selectedRequest?.book?.title || 'Unknown Title'}</h4>
+                  <p className="text-sm opacity-70">by {selectedRequest?.book?.author || 'Unknown Author'}</p>
+                  <p className="text-xs opacity-60">Requested by: {selectedRequest?.user?.name || 'Unknown User'}</p>
                 </div>
               </div>
               
@@ -455,10 +457,10 @@ function RequestManagement() {
             <div className="space-y-4">
               <div className="flex items-center space-x-4">
                 <div className="w-16 h-20 rounded bg-white dark:bg-slate-800 flex items-center justify-center overflow-hidden">
-                  {requestToDelete.book.image ? (
+                  {requestToDelete?.book?.image ? (
                     <img
-                      src={`http://localhost:8080${requestToDelete.book.image}`}
-                      alt={requestToDelete.book.title}
+                      src={requestToDelete.book.image}
+                      alt={requestToDelete.book.title || 'Book'}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -466,10 +468,10 @@ function RequestManagement() {
                   )}
                 </div>
                 <div>
-                  <h4 className="font-semibold">{requestToDelete.book.title}</h4>
-                  <p className="text-sm opacity-70">by {requestToDelete.book.author}</p>
-                  <p className="text-xs opacity-60">Requested by: {requestToDelete.user.name}</p>
-                  <p className="text-xs opacity-60">Status: {requestToDelete.status}</p>
+                  <h4 className="font-semibold">{requestToDelete?.book?.title || 'Unknown Title'}</h4>
+                  <p className="text-sm opacity-70">by {requestToDelete?.book?.author || 'Unknown Author'}</p>
+                  <p className="text-xs opacity-60">Requested by: {requestToDelete?.user?.name || 'Unknown User'}</p>
+                  <p className="text-xs opacity-60">Status: {requestToDelete?.status || 'Unknown'}</p>
                 </div>
               </div>
               
@@ -485,7 +487,7 @@ function RequestManagement() {
               </div>
               
               <p className="text-sm">
-                Are you sure you want to delete this request for <strong>"{requestToDelete.book.title}"</strong>?
+                Are you sure you want to delete this request for <strong>"{requestToDelete?.book?.title || 'Unknown Title'}"</strong>?
               </p>
             </div>
             

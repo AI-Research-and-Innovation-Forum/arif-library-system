@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { bookAPI, adminAPI } from '../services/api';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://arif-library-system.onrender.com";
+
 function BookManagement() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -313,7 +315,7 @@ function BookManagement() {
                   <td>
                     {book.image ? (
                       <img
-                        src={`http://localhost:8080${book.image}`}
+                        src={book.image}
                         alt={book.title}
                         className="w-16 h-20 object-cover rounded"
                       />
@@ -367,7 +369,7 @@ function BookManagement() {
               <div className="flex-shrink-0">
                 {book.image ? (
                   <img
-                    src={`http://localhost:8080${book.image}`}
+                    src={book.image}
                     alt={book.title}
                     className="w-16 h-20 object-cover rounded"
                   />
@@ -421,7 +423,7 @@ function BookManagement() {
               <div className="flex items-center space-x-4">
                 {selectedBook.image ? (
                   <img
-                    src={`http://localhost:8080${selectedBook.image}`}
+                    src={selectedBook.image}
                     alt={selectedBook.title}
                     className="w-16 h-20 object-cover rounded"
                   />

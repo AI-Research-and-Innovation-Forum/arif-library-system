@@ -7,6 +7,8 @@ import { bookAPI } from '../services/api';
 import BookCard from './BookCard';
 import Login from './Login';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://arif-library-system.onrender.com";
+
 function Freebook() {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -66,7 +68,7 @@ function Freebook() {
                 <figure className="h-48">
                     {book.image ? (
                         <img
-                            src={`http://localhost:8080${book.image}`}
+                            src={book.image}
                             alt={book.title}
                             className="w-full h-full"
                         />
