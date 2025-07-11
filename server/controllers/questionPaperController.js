@@ -2,6 +2,7 @@ import QuestionPaper from "../models/questionPaper.js";
 import { errorHandler } from "../helpers/errorHandler.js";
 import fs from "fs";
 import path from "path";
+import cloudinary from '../helpers/cloudinary.js';
 
 export const getAllQuestionPapers = async (req, res) => {
   try {
@@ -73,6 +74,26 @@ export const uploadQuestionPaper = async (req, res) => {
       });
     }
 
+    let filePath, fileSize, filePublicId;
+
+    if (req.file.mimetype === 'application/pdf') {
+      const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'question-papers',
+        resource_type: 'raw',
+        type: 'upload',
+        use_filename: true,
+        unique_filename: false,
+      });
+      filePath = uploadResult.secure_url;
+      fileSize = req.file.size;
+      filePublicId = uploadResult.public_id;
+      fs.unlinkSync(req.file.path);
+    } else {
+      filePath = req.file.path;
+      fileSize = req.file.size;
+      filePublicId = req.file.filename;
+    }
+
     const questionPaper = new QuestionPaper({
       title,
       subject,
@@ -80,8 +101,9 @@ export const uploadQuestionPaper = async (req, res) => {
       semester,
       course,
       description,
-      filePath: req.file.path,
-      fileSize: req.file.size,
+      filePath,
+      fileSize,
+      filePublicId,
       uploadedBy: req.user.id,
     });
 
@@ -115,6 +137,13 @@ export const downloadQuestionPaper = async (req, res) => {
       });
     }
 
+    if (questionPaper.filePath && questionPaper.filePath.startsWith('http')) {
+      const url = questionPaper.filePath;
+      questionPaper.downloads += 1;
+      await questionPaper.save();
+      return res.redirect(url);
+    }
+
     if (!fs.existsSync(questionPaper.filePath)) {
       return res.status(404).json({
         success: false,
@@ -125,7 +154,6 @@ export const downloadQuestionPaper = async (req, res) => {
     questionPaper.downloads += 1;
     await questionPaper.save();
 
-    // Send file
     res.download(questionPaper.filePath);
   } catch (error) {
     errorHandler(res, error);
@@ -197,6 +225,16 @@ export const deleteQuestionPaper = async (req, res) => {
         success: false,
         message: "Not authorized to delete this question paper",
       });
+    }
+
+    if (questionPaper.filePublicId) {
+      try {
+        // For PDFs (raw) and images (image)
+        const resourceType = questionPaper.filePath.endsWith('.pdf') ? 'raw' : 'image';
+        await cloudinary.uploader.destroy(questionPaper.filePublicId, { resource_type: resourceType });
+      } catch (err) {
+        console.error('Error deleting from Cloudinary:', err);
+      }
     }
 
     if (fs.existsSync(questionPaper.filePath)) {
