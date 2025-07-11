@@ -15,15 +15,22 @@ export const addBookController = async (req, res) => {
 
   let imageUrl = null;
   if (req.file && req.file.path) {
-    const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-      folder: 'library-books',
-      resource_type: 'image',
-      type: 'upload',
-      use_filename: true,
-      unique_filename: false,
-    });
-    imageUrl = uploadResult.secure_url;
-    fs.unlinkSync(req.file.path);
+    if (!req.file.path.startsWith('http')) {
+      const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'library-books',
+        resource_type: 'image',
+        type: 'upload',
+        use_filename: true,
+        unique_filename: false,
+      });
+      imageUrl = uploadResult.secure_url;
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (err) {
+      }
+    } else {
+      imageUrl = req.file.path;
+    }
   }
 
   const book = new Book({
