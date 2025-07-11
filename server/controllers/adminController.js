@@ -1,6 +1,8 @@
 import Book from "../models/book.js";
 import Issue from "../models/issue.js";
 import User from "../models/user.js";
+import cloudinary from '../helpers/cloudinary.js';
+import fs from 'fs';
 
 export const addBookController = async (req, res) => {
   const { title, author, category, isbn, copiesAvailable } = req.body;
@@ -12,8 +14,16 @@ export const addBookController = async (req, res) => {
   }
 
   let imageUrl = null;
-  if (req.file) {
-    imageUrl = `/uploads/${req.file.filename}`;
+  if (req.file && req.file.path) {
+    const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'library-books',
+      resource_type: 'image',
+      type: 'upload',
+      use_filename: true,
+      unique_filename: false,
+    });
+    imageUrl = uploadResult.secure_url;
+    fs.unlinkSync(req.file.path);
   }
 
   const book = new Book({
@@ -35,6 +45,18 @@ export const deleteBookController = async (req, res) => {
 
   if (!deleted) {
     return res.status(404).json({ message: "Book not found" });
+  }
+
+  if (deleted.image && deleted.image.startsWith('http') && deleted.image.includes('/image/upload/')) {
+    try {
+      const parts = deleted.image.split('/image/upload/');
+      if (parts.length === 2) {
+
+        const publicId = parts[1].replace(/\.[^/.]+$/, '');
+        const result = await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
+      }
+    } catch (err) {
+    }
   }
 
   res.status(200).json({ message: "Book deleted successfully" });
@@ -94,7 +116,7 @@ export const issueBookController = async (req, res) => {
     user: userId,
     issueDate: new Date(),
     status: "issued",
-    dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 days from now
+    dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
   });
 
   await issue.save();
@@ -149,8 +171,10 @@ export const deleteRequestController = async (req, res) => {
     }
 
     if (request.status === "approved" && !request.returnDate) {
-      request.book.copiesAvailable += 1;
-      await request.book.save();
+      if (request.book) {
+        request.book.copiesAvailable += 1;
+        await request.book.save();
+      }
     }
 
     await Issue.findByIdAndDelete(requestId);
@@ -243,7 +267,7 @@ export const getUserWithIssuesController = async (req, res) => {
       .populate("book", "title author isbn")
       .sort({ issueDate: -1 });
 
-    // Mark overdue books
+
     const updatedIssues = await markOverdueBooks(issues);
 
     res.status(200).json({

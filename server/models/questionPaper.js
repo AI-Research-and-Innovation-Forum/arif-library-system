@@ -31,6 +31,10 @@ const questionPaperSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    filePublicId: {
+      type: String,
+      required: false,
+    },
     description: String,
     uploadedBy: {
       type: mongoose.Schema.Types.ObjectId,
