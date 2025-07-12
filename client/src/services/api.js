@@ -142,5 +142,4 @@ export const questionPaperRequestAPI = {
   deleteRequestAdmin: (id) => api.delete(`/question-paper-requests/${id}`),
 };
 
-
 export default api;
