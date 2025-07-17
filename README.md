@@ -1,165 +1,109 @@
-# ARIF Library Management System
+# 📚 ARIF Library Management System
 
-A full-stack library management system built with React (frontend) and Node.js/Express (backend) with MongoDB database.
+A full-stack library management web application built by the [AI Research and Innovation Forum (ARIF)](https://github.com/AI-Research-and-Innovation-Forum), designed to digitize and simplify library services for both students and administrators.
 
-## Features
+## 🔗 Live Website
 
-- **User Authentication**: Register and login functionality
-- **Book Management**: Add, view, and delete books (Admin only)
-- **Book Issuing**: Issue and return books
-- **Admin Dashboard**: View statistics and manage the library
-- **Responsive Design**: Works on desktop and mobile devices
+🌐 [Visit the Live App](https://arif-library-management.netlify.app)
 
-## Tech Stack
+---
 
-### Frontend
-- React 19
-- Vite
-- React Router DOM
-- Axios
+## 🚀 Features
+
+- 📚 Book Request System: Students can browse and request books. Admins approve requests and issue the book physically.
+- 👤 Role-Based Login: Secure authentication system for students and admins.
+- 📄 Question Paper Upload/Download: Students can contribute and access previous year papers.
+- ☁️ Cloudinary Integration: Efficient file storage and delivery for documents and images.
+- 🌗 Light/Dark Theme Toggle: Switch between light and dark modes for a personalized experience.
+- 🔍 Real-time Book Filtering: Quickly find books by title, author, or category.
+- 📈 Admin Dashboard: View stats, manage books, users, and requests in one place.
+
+---
+
+## 🛠️ Tech Stack
+
+**Frontend**:
+
+- React.js
 - Tailwind CSS
-- DaisyUI
+- Axios
+- React Router DOM
 
-### Backend
+**Backend**:
+
 - Node.js
 - Express.js
 - MongoDB with Mongoose
-- JWT Authentication
-- bcryptjs for password hashing
+- JWT for authentication
+- Cloudinary (for file upload)
+- dotenv, morgan, cors
 
-## Prerequisites
+---
 
-- Node.js (v16 or higher)
-- MongoDB (local installation or MongoDB Atlas)
-- npm or yarn
+## 🧑‍💻 Contributors
 
-## Installation
+Special thanks to our amazing contributors:
 
-### 1. Clone the repository
-```bash
-git clone <repository-url>
-cd ARIF-Library-Management
-```
+- [Soham Chaudhari](https://github.com/Soham156)
+- [Vaibhav Chaudhari](https://github.com/VaibhavChaudhari07)
 
-### 2. Backend Setup
+---
+
+## 🧪 Running Locally
+
+### 📁 Backend
+
 ```bash
 cd server
 npm install
+npm run dev
 ```
 
-Create a `.env` file in the server directory:
+Create a `.env` file in `/server` with:
+
 ```env
 PORT=8080
-MONGO_URL=mongodb://localhost:27017/library_management
-JWT_SECRET=your_jwt_secret_key_here_change_in_production
-NODE_ENV=development
+MONGO_URL=your_mongodb_connection_url
+JWT_SECRET=your_jwt_secret
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
-### 3. Frontend Setup
-```bash
-cd ../client
-npm install
-```
+### 🌐 Frontend
 
-## Running the Application
-
-### 1. Start the Backend Server
-```bash
-cd server
-npm run dev
-```
-The server will start on `http://localhost:8080`
-
-### 2. Start the Frontend Development Server
 ```bash
 cd client
-npm run dev
-```
-The frontend will start on `http://localhost:5173`
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login user
-
-### Books
-- `GET /api/books` - Get all books
-- `POST /api/books` - Add a new book (Admin only)
-- `GET /api/books/:id` - Get book by ID
-- `DELETE /api/books/:id` - Delete book (Admin only)
-
-### Admin
-- `POST /api/admin/add-book` - Add book (Admin only)
-- `DELETE /api/admin/delete-book/:id` - Delete book (Admin only)
-- `POST /api/admin/issue-book` - Issue book to user
-- `POST /api/admin/return-book` - Return book
-- `GET /api/admin/issued-books` - Get all issued books
-
-### Users
-- `GET /api/users/profile` - Get user profile
-- `GET /api/users/my-issued-books` - Get user's issued books
-
-### Issues
-- `POST /api/issues/issue` - Issue book
-- `POST /api/issues/return` - Return book
-- `GET /api/issues/mybooks` - Get user's books
-
-## Project Structure
-
-```
-ARIF Library Management/
-├── client/                 # Frontend React application
-│   ├── src/
-│   │   ├── admin/         # Admin components
-│   │   ├── components/    # Reusable components
-│   │   ├── services/      # API services
-│   │   └── ...
-│   └── ...
-├── server/                # Backend Node.js application
-│   ├── controllers/       # Route controllers
-│   ├── models/           # MongoDB models
-│   ├── routes/           # API routes
-│   ├── middlewares/      # Custom middlewares
-│   └── ...
-└── README.md
+npm install
+npm start
 ```
 
-## Usage
+---
 
-1. **Register/Login**: Users can register or login to access the system
-2. **Browse Books**: View all available books in the library
-3. **Admin Functions**: 
-   - Add new books
-   - Delete existing books
-   - View dashboard statistics
-   - Manage book issues and returns
-4. **User Functions**:
-   - View issued books
-   - Request book returns
+## 📂 Folder Structure
 
-## Development
+```
+ARIF-Library-System/
+│
+├── client/        # React Frontend
+├── server/        # Node.js + Express Backend
+├── README.md
+```
 
-### Adding New Features
-1. Create API endpoints in the backend
-2. Add corresponding frontend components
-3. Update the API service layer
-4. Test the integration
+---
 
-### Environment Variables
-Make sure to set up proper environment variables for production:
-- Use a strong JWT secret
-- Set up a production MongoDB connection
-- Configure CORS settings appropriately
+## 📌 Notes
 
-## Contributing
+- Make sure MongoDB is running locally or use a MongoDB Atlas URL.
+- Cloudinary is used for uploading book images and question papers.
+- Contributions are welcome! Feel free to open issues or submit PRs.
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+---
 
-## License
+## 📃 License
 
-This project is licensed under the ISC License. 
+This project is licensed under the MIT License.
+
+---
+
+Made with ❤️ by the ARIF Community.
